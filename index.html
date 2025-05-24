@@ -23,7 +23,6 @@
             margin: 0;
         }
 
-        /* Стили аутентификации */
         .auth-container {
             min-height: 100vh;
             display: flex;
@@ -102,7 +101,6 @@
             100% { transform: translateX(100%) rotate(45deg); }
         }
 
-        /* Стили панели тестеров */
         .tester-panel {
             display: none;
             padding: 2rem;
@@ -134,7 +132,6 @@
             margin-bottom: 2rem;
         }
 
-        /* Стили уведомлений */
         .notification-center {
             position: fixed;
             top: 20px;
@@ -156,7 +153,6 @@
             to { transform: translateX(0); }
         }
 
-        /* Стили рейтинга */
         .rating-system {
             display: flex;
             align-items: center;
@@ -169,7 +165,6 @@
             font-size: 1.5rem;
         }
 
-        /* Стили загрузки скриншотов */
         .screenshot-upload {
             border: 2px dashed var(--cyber-purple);
             padding: 1rem;
@@ -203,13 +198,25 @@
             color: white;
             cursor: pointer;
         }
+
+        #errorMsg {
+            display: none;
+            margin-top: 1rem;
+            animation: errorShake 0.4s;
+            color: #ff4444;
+        }
+
+        @keyframes errorShake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(10px); }
+            50% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
     </style>
 </head>
 <body>
-    <!-- Контейнер уведомлений -->
     <div class="notification-center" id="notificationCenter"></div>
 
-    <!-- Форма авторизации -->
     <div class="auth-container">
         <div class="auth-box">
             <h3 style="color: var(--neon-blue); margin-bottom: 2rem;">
@@ -221,16 +228,13 @@
                 placeholder="Введите ключ-доступа"
                 id="adminPassword"
             >
-            <button class="cyber-button" onclick="checkAuth()">
+            <button class="cyber-button" onclick="checkAuth(event)">
                 Войти
             </button>
-            <p id="errorMsg" style="color: #FF0000; display: none;">
-                ОШИБКА: Неверный ключ доступа!
-            </p>
+            <p id="errorMsg">ОШИБКА: Неверный ключ доступа!</p>
         </div>
     </div>
 
-    <!-- Панель тестеров -->
     <div class="tester-panel" id="testerPanel">
         <div class="user-header">
             <div class="user-avatar" id="userAvatar">T</div>
@@ -246,11 +250,9 @@
             </div>
         </div>
 
-        <!-- Форма отчета -->
         <div class="report-form">
             <h3><i class="fas fa-bug"></i> Отчет об ошибке</h3>
             
-            <!-- Загрузка скриншотов -->
             <div class="screenshot-upload">
                 <input 
                     type="file" 
@@ -269,7 +271,6 @@
                 <div class="preview-container" id="previewContainer"></div>
             </div>
 
-            <!-- Текстовое поле -->
             <textarea 
                 id="reportText" 
                 class="auth-input" 
@@ -282,13 +283,11 @@
             </button>
         </div>
 
-        <!-- История отчетов -->
         <div style="margin-top: 3rem;">
             <h3><i class="fas fa-history"></i> Последние отчеты</h3>
             <div id="reportsList" class="preview-container"></div>
         </div>
 
-        <!-- Кнопка выхода -->
         <div style="text-align: center; margin-top: 3rem;">
             <button 
                 class="cyber-button" 
@@ -301,40 +300,56 @@
     </div>
 
     <script>
-        // Система авторизации
         const validHash = '5f4dcc3b5aa765d61d8327deb882cf99'; // MD5: password
         let userRating = 5.0;
         let uploadedFiles = [];
 
-        function checkAuth() {
-            const password = document.getElementById('adminPassword').value;
+        function checkAuth(event) {
+            event.preventDefault();
+            const password = document.getElementById('adminPassword').value.trim();
             const errorMsg = document.getElementById('errorMsg');
 
-            if (md5(password) === validHash) {
+            errorMsg.style.display = 'none';
+
+            if (!password) {
+                errorMsg.textContent = "Введите пароль!";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            if (md5(password).toLowerCase() === validHash.toLowerCase()) {
                 document.querySelector('.auth-container').style.display = 'none';
                 document.getElementById('testerPanel').style.display = 'block';
                 generateAvatar();
                 localStorage.setItem('vegasAuth', 'true');
             } else {
+                errorMsg.textContent = "Неверный ключ доступа!";
                 errorMsg.style.display = 'block';
-                setTimeout(() => errorMsg.style.display = 'none', 2000);
+                document.getElementById('adminPassword').value = '';
             }
         }
 
-        // Генерация аватара
+        document.getElementById('adminPassword').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkAuth(e);
+        });
+
         function generateAvatar() {
-            const colors = [var(--neon-blue), var(--matrix-green), var(--cyber-purple)];
+            const colors = ['#33CCFF', '#BC00FF', '#00FF88'];
             const avatar = document.getElementById('userAvatar');
             avatar.style.background = `linear-gradient(45deg, 
                 ${colors[Math.floor(Math.random() * colors.length)]}, 
                 ${colors[Math.floor(Math.random() * colors.length)]})`;
         }
 
-        // Управление скриншотами
         function handleFiles(files) {
             Array.from(files).forEach(file => {
                 if(!file.type.startsWith('image/')) {
                     showNotification('Только изображения!', 'error');
+                    return;
+                }
+
+                if(file.size > 5 * 1024 * 1024) {
+                    showNotification('Файл слишком большой (макс. 5MB)', 'error');
                     return;
                 }
 
@@ -358,10 +373,16 @@
             document.getElementById('previewContainer').children[index].remove();
         }
 
-        // Система отчетов
         function submitReport() {
+            const reportText = document.getElementById('reportText').value.trim();
+
             if(uploadedFiles.length === 0) {
                 showNotification('Добавьте скриншот!', 'error');
+                return;
+            }
+
+            if(reportText.length < 10) {
+                showNotification('Опишите проблему подробнее!', 'error');
                 return;
             }
 
@@ -372,45 +393,44 @@
             reportItem.className = 'screenshot-preview';
             reportItem.innerHTML = `
                 <img src="${uploadedFiles[0]}">
-                <p>${document.getElementById('reportText').value.slice(0, 50)}...</p>
+                <p>${reportText.slice(0, 50)}${reportText.length > 50 ? '...' : ''}</p>
             `;
             document.getElementById('reportsList').prepend(reportItem);
 
-            showNotification('Отчет отправлен!', 'success');
+            showNotification('Отчет успешно отправлен!', 'success');
             uploadedFiles = [];
             document.getElementById('previewContainer').innerHTML = '';
             document.getElementById('reportText').value = '';
         }
 
-        // Уведомления
         function showNotification(message, type = 'info') {
-            const icon = {
-                'info': 'info-circle',
-                'error': 'exclamation-triangle',
-                'success': 'check-circle'
-            }[type];
-
+            const iconMap = {
+                info: 'info-circle',
+                error: 'exclamation-triangle',
+                success: 'check-circle'
+            };
             const notification = document.createElement('div');
-            notification.className = `notification`;
+            notification.className = `notification ${type}`;
             notification.innerHTML = `
-                <i class="fas fa-${icon}"></i> ${message}
+                <i class="fas fa-${iconMap[type]}"></i> ${message}
             `;
             document.getElementById('notificationCenter').appendChild(notification);
             setTimeout(() => notification.remove(), 5000);
         }
 
-        // Выход
         function logout() {
             localStorage.removeItem('vegasAuth');
             location.reload();
         }
 
-        // Инициализация
-        if(localStorage.getItem('vegasAuth') === 'true') {
-            document.querySelector('.auth-container').style.display = 'none';
-            document.getElementById('testerPanel').style.display = 'block';
-            generateAvatar();
-        }
+        // Инициализация при загрузке
+        window.onload = () => {
+            if(localStorage.getItem('vegasAuth') === 'true') {
+                document.querySelector('.auth-container').style.display = 'none';
+                document.getElementById('testerPanel').style.display = 'block';
+                generateAvatar();
+            }
+        };
     </script>
 </body>
 </html>
