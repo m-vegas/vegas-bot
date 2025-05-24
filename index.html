@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vegas+ | Team Testers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+    <style>
+        :root {
+            --neon-blue: #33CCFF;
+            --cyber-purple: #BC00FF;
+            --matrix-green: #00FF88;
+            --deep-space: #0A0A1F;
+            --star-dust: rgba(255,255,255,0.1);
+        }
+
+        body {
+            background: var(--deep-space);
+            color: white;
+            font-family: 'Oxanium', cursive;
+            overflow-x: hidden;
+            margin: 0;
+        }
+
+        /* Стили аутентификации */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, 
+                rgba(51,204,255,0.1) 0%, 
+                var(--deep-space) 70%);
+        }
+
+        .auth-box {
+            background: rgba(10,10,31,0.9);
+            backdrop-filter: blur(10px);
+            border: 3px solid var(--matrix-green);
+            box-shadow: 0 0 30px var(--matrix-green);
+            padding: 3rem;
+            width: 400px;
+            text-align: center;
+            animation: glitch-border 2s infinite;
+        }
+
+        @keyframes glitch-border {
+            0% { box-shadow: 0 0 20px var(--matrix-green); }
+            50% { box-shadow: 0 0 30px var(--cyber-purple); }
+            100% { box-shadow: 0 0 20px var(--matrix-green); }
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 1rem;
+            margin: 1rem 0;
+            background: transparent;
+            border: 1px solid var(--neon-blue);
+            color: white;
+            font-family: inherit;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .auth-input:focus {
+            outline: none;
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        .cyber-button {
+            background: linear-gradient(45deg, 
+                var(--neon-blue), 
+                var(--cyber-purple));
+            padding: 1rem 2rem;
+            border: none;
+            color: var(--deep-space);
+            cursor: pointer;
+            font-family: inherit;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, 
+                transparent, 
+                rgba(255,255,255,0.2), 
+                transparent);
+            transform: rotate(45deg);
+            animation: scan 3s infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        /* Стили панели тестеров */
+        .tester-panel {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .user-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .user-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .report-form {
+            background: rgba(10,10,31,0.9);
+            padding: 2rem;
+            border: 2px solid var(--matrix-green);
+            margin-bottom: 2rem;
+        }
+
+        /* Стили уведомлений */
+        .notification-center {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 300px;
+        }
+
+        .notification {
+            background: rgba(10,10,31,0.95);
+            border: 2px solid var(--neon-blue);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        /* Стили рейтинга */
+        .rating-system {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 1rem 0;
+        }
+
+        .rating-star {
+            color: var(--matrix-green);
+            font-size: 1.5rem;
+        }
+
+        /* Стили загрузки скриншотов */
+        .screenshot-upload {
+            border: 2px dashed var(--cyber-purple);
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .preview-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .screenshot-preview {
+            position: relative;
+            border: 2px solid var(--neon-blue);
+        }
+
+        .screenshot-preview img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: red;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Контейнер уведомлений -->
+    <div class="notification-center" id="notificationCenter"></div>
+
+    <!-- Форма авторизации -->
+    <div class="auth-container">
+        <div class="auth-box">
+            <h3 style="color: var(--neon-blue); margin-bottom: 2rem;">
+                <i class="fas fa-user-secret"></i> Vegas+ Tester Access
+            </h3>
+            <input 
+                type="password" 
+                class="auth-input" 
+                placeholder="Введите ключ-доступа"
+                id="adminPassword"
+            >
+            <button class="cyber-button" onclick="checkAuth()">
+                Войти
+            </button>
+            <p id="errorMsg" style="color: #FF0000; display: none;">
+                ОШИБКА: Неверный ключ доступа!
+            </p>
+        </div>
+    </div>
+
+    <!-- Панель тестеров -->
+    <div class="tester-panel" id="testerPanel">
+        <div class="user-header">
+            <div class="user-avatar" id="userAvatar">T</div>
+            <h2 style="color: var(--matrix-green);">
+                Добро пожаловать, <span id="username">Тестер</span>!
+            </h2>
+            <div class="rating-system">
+                <span>Рейтинг:</span>
+                <div class="rating-star">
+                    <i class="fas fa-star"></i>
+                    <span id="ratingValue">5.0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Форма отчета -->
+        <div class="report-form">
+            <h3><i class="fas fa-bug"></i> Отчет об ошибке</h3>
+            
+            <!-- Загрузка скриншотов -->
+            <div class="screenshot-upload">
+                <input 
+                    type="file" 
+                    id="screenshotInput" 
+                    accept="image/*" 
+                    multiple 
+                    style="display: none;"
+                    onchange="handleFiles(this.files)"
+                >
+                <button 
+                    class="cyber-button"
+                    onclick="document.getElementById('screenshotInput').click()"
+                >
+                    <i class="fas fa-camera"></i> Добавить скриншот
+                </button>
+                <div class="preview-container" id="previewContainer"></div>
+            </div>
+
+            <!-- Текстовое поле -->
+            <textarea 
+                id="reportText" 
+                class="auth-input" 
+                placeholder="Опишите проблему..."
+                style="height: 150px; margin: 1rem 0;"
+            ></textarea>
+            
+            <button class="cyber-button" onclick="submitReport()">
+                Отправить отчет
+            </button>
+        </div>
+
+        <!-- История отчетов -->
+        <div style="margin-top: 3rem;">
+            <h3><i class="fas fa-history"></i> Последние отчеты</h3>
+            <div id="reportsList" class="preview-container"></div>
+        </div>
+
+        <!-- Кнопка выхода -->
+        <div style="text-align: center; margin-top: 3rem;">
+            <button 
+                class="cyber-button" 
+                style="background: var(--cyber-purple);"
+                onclick="logout()"
+            >
+                <i class="fas fa-sign-out-alt"></i> Выйти
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Система авторизации
+        const validHash = '5f4dcc3b5aa765d61d8327deb882cf99'; // MD5: password
+        let userRating = 5.0;
+        let uploadedFiles = [];
+
+        function checkAuth() {
+            const password = document.getElementById('adminPassword').value;
+            const errorMsg = document.getElementById('errorMsg');
+
+            if (md5(password) === validHash) {
+                document.querySelector('.auth-container').style.display = 'none';
+                document.getElementById('testerPanel').style.display = 'block';
+                generateAvatar();
+                localStorage.setItem('vegasAuth', 'true');
+            } else {
+                errorMsg.style.display = 'block';
+                setTimeout(() => errorMsg.style.display = 'none', 2000);
+            }
+        }
+
+        // Генерация аватара
+        function generateAvatar() {
+            const colors = [var(--neon-blue), var(--matrix-green), var(--cyber-purple)];
+            const avatar = document.getElementById('userAvatar');
+            avatar.style.background = `linear-gradient(45deg, 
+                ${colors[Math.floor(Math.random() * colors.length)]}, 
+                ${colors[Math.floor(Math.random() * colors.length)]})`;
+        }
+
+        // Управление скриншотами
+        function handleFiles(files) {
+            Array.from(files).forEach(file => {
+                if(!file.type.startsWith('image/')) {
+                    showNotification('Только изображения!', 'error');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const preview = document.createElement('div');
+                    preview.className = 'screenshot-preview';
+                    preview.innerHTML = `
+                        <img src="${e.target.result}">
+                        <button class="delete-btn" onclick="deleteScreenshot(${uploadedFiles.length})">×</button>
+                    `;
+                    document.getElementById('previewContainer').appendChild(preview);
+                    uploadedFiles.push(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function deleteScreenshot(index) {
+            uploadedFiles.splice(index, 1);
+            document.getElementById('previewContainer').children[index].remove();
+        }
+
+        // Система отчетов
+        function submitReport() {
+            if(uploadedFiles.length === 0) {
+                showNotification('Добавьте скриншот!', 'error');
+                return;
+            }
+
+            userRating = Math.min(userRating + 0.1, 5.0);
+            document.getElementById('ratingValue').textContent = userRating.toFixed(1);
+            
+            const reportItem = document.createElement('div');
+            reportItem.className = 'screenshot-preview';
+            reportItem.innerHTML = `
+                <img src="${uploadedFiles[0]}">
+                <p>${document.getElementById('reportText').value.slice(0, 50)}...</p>
+            `;
+            document.getElementById('reportsList').prepend(reportItem);
+
+            showNotification('Отчет отправлен!', 'success');
+            uploadedFiles = [];
+            document.getElementById('previewContainer').innerHTML = '';
+            document.getElementById('reportText').value = '';
+        }
+
+        // Уведомления
+        function showNotification(message, type = 'info') {
+            const icon = {
+                'info': 'info-circle',
+                'error': 'exclamation-triangle',
+                'success': 'check-circle'
+            }[type];
+
+            const notification = document.createElement('div');
+            notification.className = `notification`;
+            notification.innerHTML = `
+                <i class="fas fa-${icon}"></i> ${message}
+            `;
+            document.getElementById('notificationCenter').appendChild(notification);
+            setTimeout(() => notification.remove(), 5000);
+        }
+
+        // Выход
+        function logout() {
+            localStorage.removeItem('vegasAuth');
+            location.reload();
+        }
+
+        // Инициализация
+        if(localStorage.getItem('vegasAuth') === 'true') {
+            document.querySelector('.auth-container').style.display = 'none';
+            document.getElementById('testerPanel').style.display = 'block';
+            generateAvatar();
+        }
+    </script>
+</body>
+</html>
