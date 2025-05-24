@@ -19,16 +19,16 @@
             background: var(--deep-space);
             color: white;
             font-family: 'Oxanium', cursive;
-            overflow-x: hidden;
             margin: 0;
+            min-height: 100vh;
         }
 
         /* Стили авторизации */
         .auth-container {
-            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            height: 100vh;
             background: radial-gradient(circle at center, 
                 rgba(51,204,255,0.1) 0%, 
                 var(--deep-space) 70%);
@@ -36,64 +36,44 @@
 
         .auth-box {
             background: rgba(10,10,31,0.9);
-            backdrop-filter: blur(10px);
             border: 3px solid var(--matrix-green);
-            box-shadow: 0 0 30px var(--matrix-green);
             padding: 3rem;
             width: 400px;
             text-align: center;
-            animation: glitch-border 2s infinite;
+            box-shadow: 0 0 30px var(--matrix-green);
         }
 
-        @keyframes glitch-border {
-            0% { box-shadow: 0 0 20px var(--matrix-green); }
-            50% { box-shadow: 0 0 30px var(--cyber-purple); }
-            100% { box-shadow: 0 0 20px var(--matrix-green); }
-        }
-
-        /* Чат */
-        .chat-container {
+        /* Панель задания */
+        .task-panel {
             display: none;
             max-width: 800px;
             margin: 2rem auto;
-            padding: 1rem;
+            padding: 2rem;
         }
 
-        .chat-messages {
-            height: 500px;
-            overflow-y: auto;
+        .task-card {
+            background: rgba(10,10,31,0.9);
             border: 2px solid var(--neon-blue);
-            padding: 1rem;
-            margin-bottom: 1rem;
-            background: rgba(0,0,0,0.3);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
         }
 
-        .message {
-            margin: 1rem 0;
-            padding: 0.5rem;
-            border-left: 3px solid var(--matrix-green);
-            background: rgba(255,255,255,0.05);
+        .task-card::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, 
+                var(--neon-blue), 
+                var(--cyber-purple));
+            z-index: -1;
+            filter: blur(20px);
+            opacity: 0.3;
         }
 
-        .message-info {
-            color: var(--neon-blue);
-            font-size: 0.8rem;
-        }
-
-        .chat-input {
-            display: flex;
-            gap: 1rem;
-        }
-
-        #messageInput {
-            flex-grow: 1;
-            padding: 1rem;
-            background: transparent;
-            border: 2px solid var(--cyber-purple);
-            color: white;
-        }
-
-        /* Общие стили */
         .cyber-button {
             background: linear-gradient(45deg, 
                 var(--neon-blue), 
@@ -103,29 +83,20 @@
             color: var(--deep-space);
             cursor: pointer;
             font-family: inherit;
-            text-transform: uppercase;
-            position: relative;
-            overflow: hidden;
+            margin: 1rem;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .cyber-button::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, 
-                transparent, 
-                rgba(255,255,255,0.2), 
-                transparent);
-            transform: rotate(45deg);
-            animation: scan 3s infinite;
-        }
-
-        @keyframes scan {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
+        .discord-link {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #5865F2;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white !important;
         }
 
         #errorMsg {
@@ -140,40 +111,55 @@
     <div class="auth-container">
         <div class="auth-box">
             <h3 style="color: var(--neon-blue);">
-                <i class="fas fa-user-secret"></i> Vegas+ Team Testers
+             <i class="fas fa-user-secret"></i> Vegas+ Team Testers
             </h3>
             <input 
                 type="password" 
-                class="auth-input" 
+                class="cyber-button" 
                 placeholder="Ключ доступа"
                 id="adminPassword"
+                style="width: 100%; margin: 1rem 0;"
             >
             <button class="cyber-button" onclick="checkAuth(event)">
                 Войти
             </button>
-            <p id="errorMsg">Отказано в доступе!</p>
+            <p id="errorMsg">Неверный ключ!</p>
         </div>
     </div>
 
-    <!-- Чат -->
-    <div class="chat-container" id="chatContainer">
-        <div class="chat-messages" id="chatMessages"></div>
-        <div class="chat-input">
-            <input 
-                type="text" 
-                id="messageInput" 
-                placeholder="Ваше сообщение..."
-                onkeypress="handleEnter(event)"
-            >
-            <button class="cyber-button" onclick="sendMessage()">
-                <i class="fas fa-paper-plane"></i>
-            </button>
+    <!-- Панель задания -->
+    <div class="task-panel" id="taskPanel">
+        <div class="task-card">
+            <h2 style="color: var(--matrix-green);">
+                <i class="fas fa-tasks"></i> Задание для тестирования
+            </h2>
+            
+            <div style="text-align: left; margin: 2rem 0;">
+                <h3>Vegas+ Anti Crasher 1.0.0 beta</h3>
+                <p>Дата: 25.05.2025</p>
+                <p>Требования:</p>
+                <ul>
+                    <li>Тестирование на 3 разных серверах</li>
+                    <li>Проверка защиты от 10+ видов крашей</li>
+                    <li>Нагрузочное тестирование </li>
+                </ul>
+            </div>
+
+            <a href="#" class="cyber-button" download>
+                <i class="fas fa-download"></i> Скачать (v1.0.0)
+            </a>
+
+            <a href="https://discord.gg/YCg9JXPmCN" 
+               class="discord-link"
+               target="_blank">
+                <i class="fab fa-discord"></i> Поддержка в Discord
+            </a>
         </div>
     </div>
 
     <script>
         // Авторизация
-        const validHash = '5f4dcc3b5aa765d61d8327deb882cf99'; // MD5: password
+        const validHash = '5f4dcc3b5aa765d61d8327deb882cf99'; // MD5: 123123
 
         function checkAuth(event) {
             event.preventDefault();
@@ -182,52 +168,16 @@
 
             if(md5(password).toLowerCase() === validHash.toLowerCase()) {
                 document.querySelector('.auth-container').style.display = 'none';
-                document.getElementById('chatContainer').style.display = 'block';
-                loadMessages();
+                document.getElementById('taskPanel').style.display = 'block';
             } else {
                 errorMsg.style.display = 'block';
             }
         }
 
-        // Чат
-        let messages = JSON.parse(localStorage.getItem('vegasChat') || '[]');
-
-        function saveMessages() {
-            localStorage.setItem('vegasChat', JSON.stringify(messages));
-        }
-
-        function loadMessages() {
-            const container = document.getElementById('chatMessages');
-            container.innerHTML = messages.map(msg => `
-                <div class="message">
-                    <div class="message-info">
-                        ${new Date(msg.time).toLocaleString()} | Тестер
-                    </div>
-                    <p>${msg.text}</p>
-                </div>
-            `).join('');
-            container.scrollTop = container.scrollHeight;
-        }
-
-        function sendMessage() {
-            const input = document.getElementById('messageInput');
-            const text = input.value.trim();
-            
-            if(text) {
-                messages.push({
-                    text: text,
-                    time: Date.now()
-                });
-                
-                saveMessages();
-                loadMessages();
-                input.value = '';
-            }
-        }
-
-        function handleEnter(e) {
-            if(e.key === 'Enter') sendMessage();
-        }
+        // Обработчик Enter
+        document.getElementById('adminPassword').addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') checkAuth(e);
+        });
     </script>
 </body>
 </html>
