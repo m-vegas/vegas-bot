@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vegas+ | Team Testers</title>
+    <title>Vegas+ | Тестеры</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
     <style>
@@ -23,6 +23,7 @@
             margin: 0;
         }
 
+        /* Стили авторизации */
         .auth-container {
             min-height: 100vh;
             display: flex;
@@ -50,23 +51,49 @@
             100% { box-shadow: 0 0 20px var(--matrix-green); }
         }
 
-        .auth-input {
-            width: 100%;
+        /* Чат */
+        .chat-container {
+            display: none;
+            max-width: 800px;
+            margin: 2rem auto;
             padding: 1rem;
+        }
+
+        .chat-messages {
+            height: 500px;
+            overflow-y: auto;
+            border: 2px solid var(--neon-blue);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .message {
             margin: 1rem 0;
+            padding: 0.5rem;
+            border-left: 3px solid var(--matrix-green);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .message-info {
+            color: var(--neon-blue);
+            font-size: 0.8rem;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 1rem;
+        }
+
+        #messageInput {
+            flex-grow: 1;
+            padding: 1rem;
             background: transparent;
-            border: 1px solid var(--neon-blue);
+            border: 2px solid var(--cyber-purple);
             color: white;
-            font-family: inherit;
-            text-align: center;
-            transition: 0.3s;
         }
 
-        .auth-input:focus {
-            outline: none;
-            box-shadow: 0 0 15px var(--neon-blue);
-        }
-
+        /* Общие стили */
         .cyber-button {
             background: linear-gradient(45deg, 
                 var(--neon-blue), 
@@ -101,336 +128,106 @@
             100% { transform: translateX(100%) rotate(45deg); }
         }
 
-        .tester-panel {
-            display: none;
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .user-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .user-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            font-weight: bold;
-        }
-
-        .report-form {
-            background: rgba(10,10,31,0.9);
-            padding: 2rem;
-            border: 2px solid var(--matrix-green);
-            margin-bottom: 2rem;
-        }
-
-        .notification-center {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            max-width: 300px;
-        }
-
-        .notification {
-            background: rgba(10,10,31,0.95);
-            border: 2px solid var(--neon-blue);
-            padding: 1rem;
-            margin-bottom: 1rem;
-            animation: slideIn 0.5s ease-out;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); }
-            to { transform: translateX(0); }
-        }
-
-        .rating-system {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 1rem 0;
-        }
-
-        .rating-star {
-            color: var(--matrix-green);
-            font-size: 1.5rem;
-        }
-
-        .screenshot-upload {
-            border: 2px dashed var(--cyber-purple);
-            padding: 1rem;
-            margin: 1rem 0;
-        }
-
-        .preview-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .screenshot-preview {
-            position: relative;
-            border: 2px solid var(--neon-blue);
-        }
-
-        .screenshot-preview img {
-            width: 100%;
-            height: 100px;
-            object-fit: cover;
-        }
-
-        .delete-btn {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: red;
-            border: none;
-            color: white;
-            cursor: pointer;
-        }
-
         #errorMsg {
+            color: #ff4444;
             display: none;
             margin-top: 1rem;
-            animation: errorShake 0.4s;
-            color: #ff4444;
-        }
-
-        @keyframes errorShake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(10px); }
-            50% { transform: translateX(-10px); }
-            100% { transform: translateX(0); }
         }
     </style>
 </head>
 <body>
-    <div class="notification-center" id="notificationCenter"></div>
-
+    <!-- Форма авторизации -->
     <div class="auth-container">
         <div class="auth-box">
-            <h3 style="color: var(--neon-blue); margin-bottom: 2rem;">
+            <h3 style="color: var(--neon-blue);">
                 <i class="fas fa-user-secret"></i> Vegas+ Tester Access
             </h3>
             <input 
                 type="password" 
                 class="auth-input" 
-                placeholder="Введите ключ-доступа"
+                placeholder="Ключ доступа"
                 id="adminPassword"
             >
             <button class="cyber-button" onclick="checkAuth(event)">
                 Войти
             </button>
-            <p id="errorMsg">ОШИБКА: Неверный ключ доступа!</p>
+            <p id="errorMsg">Неверный ключ!</p>
         </div>
     </div>
 
-    <div class="tester-panel" id="testerPanel">
-        <div class="user-header">
-            <div class="user-avatar" id="userAvatar">T</div>
-            <h2 style="color: var(--matrix-green);">
-                Добро пожаловать, <span id="username">Тестер</span>!
-            </h2>
-            <div class="rating-system">
-                <span>Рейтинг:</span>
-                <div class="rating-star">
-                    <i class="fas fa-star"></i>
-                    <span id="ratingValue">5.0</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="report-form">
-            <h3><i class="fas fa-bug"></i> Отчет об ошибке</h3>
-            
-            <div class="screenshot-upload">
-                <input 
-                    type="file" 
-                    id="screenshotInput" 
-                    accept="image/*" 
-                    multiple 
-                    style="display: none;"
-                    onchange="handleFiles(this.files)"
-                >
-                <button 
-                    class="cyber-button"
-                    onclick="document.getElementById('screenshotInput').click()"
-                >
-                    <i class="fas fa-camera"></i> Добавить скриншот
-                </button>
-                <div class="preview-container" id="previewContainer"></div>
-            </div>
-
-            <textarea 
-                id="reportText" 
-                class="auth-input" 
-                placeholder="Опишите проблему..."
-                style="height: 150px; margin: 1rem 0;"
-            ></textarea>
-            
-            <button class="cyber-button" onclick="submitReport()">
-                Отправить отчет
-            </button>
-        </div>
-
-        <div style="margin-top: 3rem;">
-            <h3><i class="fas fa-history"></i> Последние отчеты</h3>
-            <div id="reportsList" class="preview-container"></div>
-        </div>
-
-        <div style="text-align: center; margin-top: 3rem;">
-            <button 
-                class="cyber-button" 
-                style="background: var(--cyber-purple);"
-                onclick="logout()"
+    <!-- Чат -->
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input">
+            <input 
+                type="text" 
+                id="messageInput" 
+                placeholder="Ваше сообщение..."
+                onkeypress="handleEnter(event)"
             >
-                <i class="fas fa-sign-out-alt"></i> Выйти
+            <button class="cyber-button" onclick="sendMessage()">
+                <i class="fas fa-paper-plane"></i>
             </button>
         </div>
     </div>
 
     <script>
+        // Авторизация
         const validHash = '5f4dcc3b5aa765d61d8327deb882cf99'; // MD5: password
-        let userRating = 5.0;
-        let uploadedFiles = [];
 
         function checkAuth(event) {
             event.preventDefault();
             const password = document.getElementById('adminPassword').value.trim();
             const errorMsg = document.getElementById('errorMsg');
 
-            errorMsg.style.display = 'none';
-
-            if (!password) {
-                errorMsg.textContent = "Введите пароль!";
-                errorMsg.style.display = 'block';
-                return;
-            }
-
-            if (md5(password).toLowerCase() === validHash.toLowerCase()) {
+            if(md5(password).toLowerCase() === validHash.toLowerCase()) {
                 document.querySelector('.auth-container').style.display = 'none';
-                document.getElementById('testerPanel').style.display = 'block';
-                generateAvatar();
-                localStorage.setItem('vegasAuth', 'true');
+                document.getElementById('chatContainer').style.display = 'block';
+                loadMessages();
             } else {
-                errorMsg.textContent = "Неверный ключ доступа!";
                 errorMsg.style.display = 'block';
-                document.getElementById('adminPassword').value = '';
             }
         }
 
-        document.getElementById('adminPassword').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') checkAuth(e);
-        });
+        // Чат
+        let messages = JSON.parse(localStorage.getItem('vegasChat') || '[]');
 
-        function generateAvatar() {
-            const colors = ['#33CCFF', '#BC00FF', '#00FF88'];
-            const avatar = document.getElementById('userAvatar');
-            avatar.style.background = `linear-gradient(45deg, 
-                ${colors[Math.floor(Math.random() * colors.length)]}, 
-                ${colors[Math.floor(Math.random() * colors.length)]})`;
+        function saveMessages() {
+            localStorage.setItem('vegasChat', JSON.stringify(messages));
         }
 
-        function handleFiles(files) {
-            Array.from(files).forEach(file => {
-                if(!file.type.startsWith('image/')) {
-                    showNotification('Только изображения!', 'error');
-                    return;
-                }
-
-                if(file.size > 5 * 1024 * 1024) {
-                    showNotification('Файл слишком большой (макс. 5MB)', 'error');
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const preview = document.createElement('div');
-                    preview.className = 'screenshot-preview';
-                    preview.innerHTML = `
-                        <img src="${e.target.result}">
-                        <button class="delete-btn" onclick="deleteScreenshot(${uploadedFiles.length})">×</button>
-                    `;
-                    document.getElementById('previewContainer').appendChild(preview);
-                    uploadedFiles.push(e.target.result);
-                };
-                reader.readAsDataURL(file);
-            });
+        function loadMessages() {
+            const container = document.getElementById('chatMessages');
+            container.innerHTML = messages.map(msg => `
+                <div class="message">
+                    <div class="message-info">
+                        ${new Date(msg.time).toLocaleString()} | Тестер
+                    </div>
+                    <p>${msg.text}</p>
+                </div>
+            `).join('');
+            container.scrollTop = container.scrollHeight;
         }
 
-        function deleteScreenshot(index) {
-            uploadedFiles.splice(index, 1);
-            document.getElementById('previewContainer').children[index].remove();
-        }
-
-        function submitReport() {
-            const reportText = document.getElementById('reportText').value.trim();
-
-            if(uploadedFiles.length === 0) {
-                showNotification('Добавьте скриншот!', 'error');
-                return;
-            }
-
-            if(reportText.length < 10) {
-                showNotification('Опишите проблему подробнее!', 'error');
-                return;
-            }
-
-            userRating = Math.min(userRating + 0.1, 5.0);
-            document.getElementById('ratingValue').textContent = userRating.toFixed(1);
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
             
-            const reportItem = document.createElement('div');
-            reportItem.className = 'screenshot-preview';
-            reportItem.innerHTML = `
-                <img src="${uploadedFiles[0]}">
-                <p>${reportText.slice(0, 50)}${reportText.length > 50 ? '...' : ''}</p>
-            `;
-            document.getElementById('reportsList').prepend(reportItem);
-
-            showNotification('Отчет успешно отправлен!', 'success');
-            uploadedFiles = [];
-            document.getElementById('previewContainer').innerHTML = '';
-            document.getElementById('reportText').value = '';
-        }
-
-        function showNotification(message, type = 'info') {
-            const iconMap = {
-                info: 'info-circle',
-                error: 'exclamation-triangle',
-                success: 'check-circle'
-            };
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.innerHTML = `
-                <i class="fas fa-${iconMap[type]}"></i> ${message}
-            `;
-            document.getElementById('notificationCenter').appendChild(notification);
-            setTimeout(() => notification.remove(), 5000);
-        }
-
-        function logout() {
-            localStorage.removeItem('vegasAuth');
-            location.reload();
-        }
-
-        // Инициализация при загрузке
-        window.onload = () => {
-            if(localStorage.getItem('vegasAuth') === 'true') {
-                document.querySelector('.auth-container').style.display = 'none';
-                document.getElementById('testerPanel').style.display = 'block';
-                generateAvatar();
+            if(text) {
+                messages.push({
+                    text: text,
+                    time: Date.now()
+                });
+                
+                saveMessages();
+                loadMessages();
+                input.value = '';
             }
-        };
+        }
+
+        function handleEnter(e) {
+            if(e.key === 'Enter') sendMessage();
+        }
     </script>
 </body>
 </html>
