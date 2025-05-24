@@ -32,15 +32,29 @@
             background: radial-gradient(circle at center, 
                 rgba(51,204,255,0.1) 0%, 
                 var(--deep-space) 70%);
+            padding: 15px;
         }
 
         .auth-box {
             background: rgba(10,10,31,0.9);
             border: 3px solid var(--matrix-green);
-            padding: 3rem;
-            width: 400px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 350px;
             text-align: center;
             box-shadow: 0 0 30px var(--matrix-green);
+            box-sizing: border-box;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 1rem 0;
+            background: transparent;
+            border: 2px solid var(--neon-blue);
+            color: white;
+            font-size: 14px;
+            text-align: center;
         }
 
         /* Панель задания */
@@ -48,7 +62,7 @@
             display: none;
             max-width: 800px;
             margin: 2rem auto;
-            padding: 2rem;
+            padding: 15px;
         }
 
         .task-card {
@@ -57,21 +71,7 @@
             padding: 2rem;
             text-align: center;
             position: relative;
-        }
-
-        .task-card::after {
-            content: '';
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            background: linear-gradient(45deg, 
-                var(--neon-blue), 
-                var(--cyber-purple));
-            z-index: -1;
-            filter: blur(20px);
-            opacity: 0.3;
+            box-shadow: 0 0 20px var(--neon-blue);
         }
 
         .cyber-button {
@@ -86,6 +86,11 @@
             margin: 1rem;
             text-decoration: none;
             display: inline-block;
+            transition: 0.3s;
+        }
+
+        .cyber-button:hover {
+            transform: scale(1.05);
         }
 
         .discord-link {
@@ -97,12 +102,34 @@
             border-radius: 5px;
             text-decoration: none;
             color: white !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         #errorMsg {
             color: #ff4444;
             display: none;
             margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 480px) {
+            .auth-box {
+                padding: 1.5rem;
+                max-width: 300px;
+            }
+            
+            .cyber-button {
+                padding: 0.8rem 1.5rem;
+                font-size: 14px;
+            }
+
+            .discord-link {
+                right: 50%;
+                transform: translateX(50%);
+                width: max-content;
+            }
         }
     </style>
 </head>
@@ -110,56 +137,55 @@
     <!-- Форма авторизации -->
     <div class="auth-container">
         <div class="auth-box">
-            <h3 style="color: var(--neon-blue);">
-             <i class="fas fa-user-secret"></i> Vegas+ Team Testers
+            <h3 style="color: var(--neon-blue); margin-bottom: 1.5rem;">
+                <i class="fas fa-user-secret"></i> Vegas+ Tester Access
             </h3>
             <input 
                 type="password" 
-                class="cyber-button" 
+                class="auth-input" 
                 placeholder="Ключ доступа"
                 id="adminPassword"
-                style="width: 100%; margin: 1rem 0;"
             >
             <button class="cyber-button" onclick="checkAuth(event)">
                 Войти
             </button>
-            <p id="errorMsg">Неверный ключ!</p>
+            <p id="errorMsg">Неверный ключ доступа!</p>
         </div>
     </div>
 
     <!-- Панель задания -->
     <div class="task-panel" id="taskPanel">
         <div class="task-card">
-            <h2 style="color: var(--matrix-green);">
+            <h2 style="color: var(--matrix-green); margin-bottom: 2rem;">
                 <i class="fas fa-tasks"></i> Задание для тестирования
             </h2>
             
             <div style="text-align: left; margin: 2rem 0;">
                 <h3>Vegas+ Anti Crasher 1.0.0 beta</h3>
-                <p>Дата: 25.05.2025</p>
-                <p>Требования:</p>
-                <ul>
+                <p>📅 Дата: 25.05.2025</p>
+                <p>🔧 Требования:</p>
+                <ul style="padding-left: 1.5rem;">
                     <li>Тестирование на 3 разных серверах</li>
                     <li>Проверка защиты от 10+ видов крашей</li>
-                    <li>Нагрузочное тестирование </li>
+                    <li>Нагрузочное тестирование (500+ игроков)</li>
                 </ul>
             </div>
 
             <a href="#" class="cyber-button" download>
                 <i class="fas fa-download"></i> Скачать (v1.0.0)
             </a>
-
-            <a href="https://discord.gg/YCg9JXPmCN" 
-               class="discord-link"
-               target="_blank">
-                <i class="fab fa-discord"></i> Поддержка в Discord
-            </a>
         </div>
+
+        <a href="https://discord.gg/YCg9JXPmCN" 
+           class="discord-link"
+           target="_blank">
+            <i class="fab fa-discord"></i> Поддержка в Discord
+        </a>
     </div>
 
     <script>
         // Авторизация
-        const validHash = '5f4dcc3b5aa765d61d8327deb882cf99'; // MD5: 123123
+        const validHash = '5f4dcc3b5aa765d61d8327deb882cf99'; // MD5: password
 
         function checkAuth(event) {
             event.preventDefault();
@@ -171,6 +197,7 @@
                 document.getElementById('taskPanel').style.display = 'block';
             } else {
                 errorMsg.style.display = 'block';
+                document.getElementById('adminPassword').value = '';
             }
         }
 
