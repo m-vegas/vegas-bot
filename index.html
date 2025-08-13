@@ -3,23 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vegas+ Market Bot | Discord Маркетплейс</title>
+    <title>Vegas+ Market | Discord Marketplace Bot</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@800&family=Urbanist:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #00ff88;
-            --primary-dark: #00cc6a;
-            --secondary: #6200ff;
-            --dark: #0f0f1a;
-            --darker: #080811;
-            --light: #f5f5ff;
-            --gray: #8a8a9a;
+            --primary: #6C5CE7;
+            --primary-light: #A29BFE;
+            --primary-dark: #5649C0;
+            --secondary: #00B894;
+            --secondary-light: #55EFC4;
+            --dark: #1A1A2E;
+            --darker: #16213E;
+            --light: #F1F1F1;
+            --gray: #B8B8B8;
+            --dark-gray: #4A4A68;
+            --success: #00B894;
+            --warning: #FDCB6E;
+            --danger: #D63031;
             --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
             --glass: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.2);
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
         
         * {
@@ -29,156 +40,124 @@
         }
         
         body {
-            font-family: 'Urbanist', sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: var(--dark);
             color: var(--light);
+            line-height: 1.6;
             overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(98, 0, 255, 0.15) 0%, transparent 30%),
-                radial-gradient(circle at 80% 70%, rgba(0, 255, 136, 0.15) 0%, transparent 30%);
+            -webkit-font-smoothing: antialiased;
         }
         
-        /* Preloader */
-        .preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--darker);
-            display: flex;
-            flex-direction: column;
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        section {
+            padding: 6rem 0;
+            position: relative;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
         }
         
-        .preloader-logo {
-            font-family: 'Kanit', sans-serif;
-            font-size: 4rem;
-            font-weight: 800;
-            margin-bottom: 2rem;
+        .btn-primary {
             background: var(--gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            line-height: 1;
-            letter-spacing: -1px;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s forwards 0.3s;
+            color: white;
+            box-shadow: var(--shadow-md);
         }
         
-        .loader {
-            width: 80px;
-            height: 80px;
-            position: relative;
-            opacity: 0;
-            animation: fadeIn 0.5s forwards 0.5s;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
         
-        .loader-inner {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 5px solid transparent;
-            border-top-color: var(--primary);
-            animation: spin 1.5s linear infinite;
+        .btn-secondary {
+            background: var(--darker);
+            color: white;
+            border: 1px solid var(--glass-border);
         }
         
-        .loader-inner:nth-child(2) {
-            border-top-color: var(--secondary);
-            animation-delay: 0.2s;
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
         }
         
-        .loader-inner:nth-child(3) {
-            border-top-color: var(--primary);
-            animation-delay: 0.4s;
+        .btn-outline {
+            background: transparent;
+            color: var(--light);
+            border: 2px solid var(--primary);
         }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-        
-        @keyframes fadeInUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Анимация фона */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.3; }
-            50% { transform: scale(1.1); opacity: 0.4; }
-        }
-        
-        .bg-blob {
-            position: fixed;
-            width: 600px;
-            height: 600px;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.3;
-            z-index: -1;
-            animation: float 8s ease-in-out infinite, pulse 12s ease-in-out infinite;
-        }
-        
-        .blob-1 {
+        .btn-outline:hover {
             background: var(--primary);
-            top: 20%;
-            left: 10%;
-            animation-delay: 0s;
+            color: white;
         }
         
-        .blob-2 {
-            background: var(--secondary);
-            bottom: 20%;
-            right: 10%;
-            animation-delay: 2s;
-        }
-        
-        .blob-3 {
-            background: #ff00ff;
-            top: 50%;
-            left: 50%;
-            width: 400px;
-            height: 400px;
-            animation-delay: 4s;
-            opacity: 0.2;
-        }
-        
-        /* Основные стили */
+        /* Header */
         header {
-            padding: 4rem 2rem;
+            padding: 8rem 0 6rem;
             text-align: center;
             position: relative;
             overflow: hidden;
-            margin-bottom: 4rem;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         
         .header-content {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
             position: relative;
             z-index: 2;
         }
         
         .logo {
-            font-family: 'Kanit', sans-serif;
-            font-size: 4.5rem;
+            font-size: 4rem;
             font-weight: 800;
             margin-bottom: 1.5rem;
             background: var(--gradient);
@@ -186,17 +165,13 @@
             background-clip: text;
             color: transparent;
             line-height: 1;
-            letter-spacing: -1px;
-            text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
         }
         
         .tagline {
             font-size: 1.5rem;
             margin-bottom: 3rem;
             color: var(--gray);
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
+            opacity: 0.9;
         }
         
         .buttons {
@@ -207,151 +182,7 @@
             flex-wrap: wrap;
         }
         
-        .btn {
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 1.1rem;
-            border: none;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient);
-            z-index: -1;
-            transition: opacity 0.3s ease;
-        }
-        
-        .btn-primary {
-            background: var(--gradient);
-            color: white;
-            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom right,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0) 45%,
-                rgba(255, 255, 255, 0.2) 50%,
-                rgba(255, 255, 255, 0) 55%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            transform: rotate(30deg);
-            animation: shine 3s infinite;
-        }
-        
-        @keyframes shine {
-            0% { transform: translateX(-100%) rotate(30deg); }
-            100% { transform: translateX(100%) rotate(30deg); }
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4);
-        }
-        
-        .btn-secondary {
-            background: var(--darker);
-            color: white;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.05);
-            transform: translateY(-3px);
-        }
-        
-        .btn-tertiary {
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
-        }
-        
-        .btn-tertiary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-3px);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-        
-        section {
-            margin-bottom: 8rem;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        
-        section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        h2 {
-            font-family: 'Kanit', sans-serif;
-            font-size: 3rem;
-            margin-bottom: 3rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            line-height: 1.2;
-            letter-spacing: -1px;
-            position: relative;
-            display: inline-block;
-        }
-        
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--gradient);
-            border-radius: 3px;
-        }
-        
-        h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: white;
-        }
-        
-        p {
-            color: var(--gray);
-            line-height: 1.6;
-            font-size: 1.1rem;
-        }
-        
-        /* Стили для карточек */
+        /* Features */
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -359,77 +190,80 @@
         }
         
         .feature-card {
-            background: var(--glass);
-            border-radius: 16px;
+            background: var(--darker);
+            border-radius: var(--border-radius);
             padding: 2.5rem;
-            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-            backdrop-filter: blur(10px);
+            transition: var(--transition);
             border: 1px solid var(--glass-border);
             position: relative;
             overflow: hidden;
         }
         
-        .feature-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient);
-            opacity: 0;
-            z-index: -1;
-            transition: opacity 0.4s ease;
-        }
-        
         .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border-color: transparent;
-        }
-        
-        .feature-card:hover::after {
-            opacity: 0.1;
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
         }
         
         .feature-icon {
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: var(--primary);
         }
         
-        /* Стили для команд */
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        
+        .stat-card {
+            background: var(--darker);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            color: var(--gray);
+            font-size: 1rem;
+        }
+        
+        /* Commands */
         .command-list {
             display: grid;
             gap: 1.5rem;
         }
         
         .command {
-            background: var(--glass);
-            border-radius: 12px;
+            background: var(--darker);
+            border-radius: var(--border-radius);
             padding: 1.5rem;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            transition: var(--transition);
             border: 1px solid var(--glass-border);
-            position: relative;
         }
         
         .command:hover {
             border-color: var(--primary);
-            transform: translateY(-5px);
         }
         
         .command-name {
             font-weight: 700;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             margin-bottom: 0.75rem;
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            color: white;
         }
         
         .command-name i {
@@ -438,12 +272,13 @@
         
         .command-usage {
             background: rgba(0, 0, 0, 0.3);
-            padding: 0.75rem 1.25rem;
+            padding: 0.75rem 1rem;
             border-radius: 8px;
             font-family: 'Courier New', monospace;
             display: inline-block;
             margin-top: 1rem;
             color: var(--light);
+            font-size: 0.9rem;
             border-left: 3px solid var(--primary);
         }
         
@@ -459,94 +294,66 @@
             font-weight: 600;
         }
         
-        /* Категории */
+        /* Categories */
         .categories {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
+            gap: 2rem;
         }
         
         .category {
-            background: var(--glass);
-            border-radius: 12px;
+            background: var(--darker);
+            border-radius: var(--border-radius);
             padding: 2rem 1.5rem;
             text-align: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            transition: var(--transition);
             border: 1px solid var(--glass-border);
         }
         
         .category:hover {
             transform: translateY(-5px);
-            background: rgba(0, 255, 136, 0.05);
             border-color: var(--primary);
         }
         
         .category-icon {
             font-size: 2.5rem;
             margin-bottom: 1rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: var(--primary);
         }
         
-        /* Блок статистики */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 3rem;
+        /* How it works */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
         }
         
-        .stat-card {
-            background: var(--glass);
-            border-radius: 12px;
-            padding: 2rem;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s ease;
+        .step {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
         }
         
-        .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
+        .step-number {
+            background: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
         }
         
-        .stat-number {
-            font-family: 'Kanit', sans-serif;
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .stat-label {
-            color: var(--gray);
-            font-size: 1rem;
-        }
-        
-        /* Футер */
+        /* Footer */
         footer {
             background: var(--darker);
-            padding: 4rem 0;
-            text-align: center;
-            margin-top: 6rem;
+            padding: 6rem 0 3rem;
             position: relative;
-        }
-        
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: var(--gradient);
         }
         
         .footer-content {
@@ -555,9 +362,15 @@
             padding: 0 2rem;
         }
         
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+        
         .footer-logo {
-            font-family: 'Kanit', sans-serif;
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 800;
             margin-bottom: 1.5rem;
             background: var(--gradient);
@@ -567,280 +380,315 @@
             display: inline-block;
         }
         
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
+        .footer-links h3 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
         }
         
-        .footer-link {
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-links a {
             color: var(--gray);
-            text-decoration: none;
             transition: color 0.3s ease;
-            font-weight: 600;
-            position: relative;
         }
         
-        .footer-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width 0.3s ease;
-        }
-        
-        .footer-link:hover {
+        .footer-links a:hover {
             color: var(--primary);
-        }
-        
-        .footer-link:hover::after {
-            width: 100%;
         }
         
         .social-links {
             display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 3rem;
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
         
         .social-link {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: var(--glass);
+            background: rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--light);
-            font-size: 1.25rem;
-            transition: all 0.3s ease;
-            border: 1px solid var(--glass-border);
+            color: var(--gray);
+            transition: var(--transition);
         }
         
         .social-link:hover {
             background: var(--primary);
-            color: var(--dark);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.2);
+            color: white;
         }
         
         .copyright {
-            margin-top: 2rem;
+            text-align: center;
+            padding-top: 3rem;
+            margin-top: 3rem;
+            border-top: 1px solid var(--glass-border);
             color: var(--gray);
             font-size: 0.9rem;
         }
         
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            .logo {
-                font-size: 3.5rem;
+        /* Background elements */
+        .bg-element {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.15;
+            z-index: -1;
+        }
+        
+        .bg-element-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--primary);
+            top: -100px;
+            left: -100px;
+        }
+        
+        .bg-element-2 {
+            width: 600px;
+            height: 600px;
+            background: var(--secondary);
+            bottom: -200px;
+            right: -200px;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate {
+            animation: fadeIn 1s ease forwards;
+        }
+        
+        .animate-slide {
+            animation: slideUp 0.8s ease forwards;
+        }
+        
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            h1 {
+                font-size: 3rem;
             }
             
             h2 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            section {
+                padding: 4rem 0;
+            }
+            
+            h1 {
                 font-size: 2.5rem;
             }
             
-            .feature-card {
-                padding: 2rem;
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
             }
             
             .btn {
-                padding: 0.9rem 1.5rem;
-                font-size: 1rem;
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .step {
+                flex-direction: column;
+                gap: 1rem;
             }
         }
         
         @media (max-width: 480px) {
-            .logo {
-                font-size: 2.8rem;
+            .container {
+                padding: 0 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
             }
             
             .tagline {
                 font-size: 1.2rem;
             }
             
-            h2 {
-                font-size: 2rem;
-                margin-bottom: 2rem;
-            }
-            
-            .buttons {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .btn {
-                width: 100%;
-                justify-content: center;
+            .feature-card {
+                padding: 2rem;
             }
         }
-        
-        /* Анимации появления */
-        .delay-1 { transition-delay: 0.1s; }
-        .delay-2 { transition-delay: 0.2s; }
-        .delay-3 { transition-delay: 0.3s; }
-        .delay-4 { transition-delay: 0.4s; }
-        .delay-5 { transition-delay: 0.5s; }
     </style>
 </head>
 <body>
-    <!-- Preloader -->
-    <div class="preloader" id="preloader">
-        <div class="preloader-logo">VEGAS+</div>
-        <div class="loader">
-            <div class="loader-inner"></div>
-            <div class="loader-inner"></div>
-            <div class="loader-inner"></div>
-        </div>
-    </div>
-    
-    <!-- Анимированный фон -->
-    <div class="bg-blob blob-1"></div>
-    <div class="bg-blob blob-2"></div>
-    <div class="bg-blob blob-3"></div>
-    
-    <!-- Шапка -->
+    <!-- Header -->
     <header>
-        <div class="header-content">
-            <h1 class="logo">VEGAS+ MARKET</h1>
-            <p class="tagline">Продвинутый Discord маркетплейс с системой аукционов, проверкой продавцов и безопасными сделками</p>
-            
-            <div class="buttons">
-                <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="btn btn-primary">
-                    <i class="fab fa-discord"></i> Добавить бота
-                </a>
-                <a href="https://discord.gg/YCg9JXPmCN" class="btn btn-secondary">
-                    <i class="fas fa-headset"></i> Сервер поддержки
-                </a>
-                <a href="#features" class="btn btn-tertiary">
-                    <i class="fas fa-star"></i> Возможности
-                </a>
-                <a href="#commands" class="btn btn-tertiary">
-                    <i class="fas fa-terminal"></i> Команды
-                </a>
+        <div class="bg-element bg-element-1"></div>
+        <div class="bg-element bg-element-2"></div>
+        
+        <div class="container">
+            <div class="header-content animate-slide">
+                <h1 class="logo">VEGAS+ MARKET</h1>
+                <p class="tagline">Современный маркетплейс для Discord с безопасными сделками и аукционной системой</p>
+                
+                <div class="buttons">
+                    <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="btn btn-primary">
+                        <i class="fab fa-discord"></i> Добавить бота
+                    </a>
+                    <a href="https://discord.gg/YCg9JXPmCN" class="btn btn-secondary">
+                        <i class="fas fa-headset"></i> Сервер поддержки
+                    </a>
+                </div>
             </div>
         </div>
     </header>
     
-    <!-- Основное содержимое -->
-    <div class="container">
-        <!-- Возможности -->
-        <section id="features">
-            <h2>Почему Vegas+ Market?</h2>
+    <!-- Features -->
+    <section id="features">
+        <div class="container">
+            <h2 class="animate">Основные возможности</h2>
+            
             <div class="features">
-                <div class="feature-card delay-1">
+                <div class="feature-card animate delay-1">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Безопасные сделки</h3>
+                    <p>Встроенная система защиты от мошенников и проверка продавцов для вашего спокойствия.</p>
+                </div>
+                
+                <div class="feature-card animate delay-2">
+                    <div class="feature-icon">
+                        <i class="fas fa-gavel"></i>
+                    </div>
+                    <h3>Аукционы</h3>
+                    <p>Создавайте аукционы с автоматическим отслеживанием ставок и уведомлениями.</p>
+                </div>
+                
+                <div class="feature-card animate delay-3">
                     <div class="feature-icon">
                         <i class="fas fa-bolt"></i>
                     </div>
                     <h3>Мгновенные сделки</h3>
-                    <p>Продавайте и покупайте товары напрямую через Discord с защитой от мошенников.</p>
+                    <p>Быстрое оформление покупок с защитой для обеих сторон.</p>
                 </div>
                 
-                <div class="feature-card delay-2">
-                    <div class="feature-icon">
-                        <i class="fas fa-gavel"></i>
-                    </div>
-                    <h3>Аукционная система</h3>
-                    <p>Создавайте аукционы с автоматическим отслеживанием ставок и мгновенными уведомлениями.</p>
-                </div>
-                
-                <div class="feature-card delay-3">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Безопасность</h3>
-                    <p>Встроенная система проверки продавцов и модерации объявлений для вашей защиты.</p>
-                </div>
-                
-                <div class="feature-card delay-4">
+                <div class="feature-card animate delay-4">
                     <div class="feature-icon">
                         <i class="fas fa-chart-line"></i>
                     </div>
                     <h3>Аналитика</h3>
-                    <p>Подробная статистика по просмотрам, продажам и активности для каждого пользователя.</p>
+                    <p>Подробная статистика по продажам, просмотрам и активности пользователей.</p>
                 </div>
                 
-                <div class="feature-card delay-5">
+                <div class="feature-card animate delay-5">
                     <div class="feature-icon">
                         <i class="fas fa-bell"></i>
                     </div>
                     <h3>Уведомления</h3>
-                    <p>Получайте оповещения о новых ставках, сообщениях покупателей и изменениях статуса.</p>
+                    <p>Оповещения о новых ставках, сообщениях и изменениях статуса.</p>
                 </div>
                 
-                <div class="feature-card">
+                <div class="feature-card animate">
                     <div class="feature-icon">
                         <i class="fas fa-cogs"></i>
                     </div>
                     <h3>Гибкие настройки</h3>
-                    <p>Полный контроль над категориями, правами доступа и модерацией для администраторов.</p>
+                    <p>Полный контроль для администраторов сервера.</p>
                 </div>
             </div>
             
             <div class="stats">
-                <div class="stat-card delay-1">
+                <div class="stat-card animate delay-1">
                     <div class="stat-number">1000+</div>
                     <div class="stat-label">Активных пользователей</div>
                 </div>
-                <div class="stat-card delay-2">
+                <div class="stat-card animate delay-2">
                     <div class="stat-number">5000+</div>
                     <div class="stat-label">Завершенных сделок</div>
                 </div>
-                <div class="stat-card delay-3">
+                <div class="stat-card animate delay-3">
                     <div class="stat-number">99%</div>
                     <div class="stat-label">Успешных сделок</div>
                 </div>
-                <div class="stat-card delay-4">
+                <div class="stat-card animate delay-4">
                     <div class="stat-number">24/7</div>
                     <div class="stat-label">Поддержка</div>
                 </div>
             </div>
-        </section>
-        
-        <!-- Команды -->
-        <section id="commands">
-            <h2>Основные команды</h2>
+        </div>
+    </section>
+    
+    <!-- Commands -->
+    <section id="commands" style="background: var(--darker);">
+        <div class="container">
+            <h2 class="animate">Команды бота</h2>
+            
             <div class="command-list">
-                <div class="command delay-1">
+                <div class="command animate delay-1">
                     <div class="command-name">
                         <i class="fas fa-tag"></i> /sell
                     </div>
                     <p>Создать новое объявление о продаже товара или услуги</p>
-                    <div class="command-usage">/sell выберите категорию цена - название товара - фото по желанию</div>
+                    <div class="command-usage">/sell категория цена - название - описание</div>
                 </div>
                 
-                <div class="command delay-2">
+                <div class="command animate delay-2">
                     <div class="command-name">
                         <i class="fas fa-gavel"></i> /bid
                     </div>
                     <p>Сделать ставку на аукцион</p>
-                    <div class="command-usage">/bid 42 1500$</div>
+                    <div class="command-usage">/bid [ID объявления] [сумма]</div>
                 </div>
                 
-                <div class="command delay-3">
+                <div class="command animate delay-3">
                     <div class="command-name">
                         <i class="fas fa-check-circle"></i> /verify
                     </div>
-                    <p>Запросить верификацию продавца (через поддержку)</p>
+                    <p>Запросить верификацию продавца</p>
                     <div class="command-usage">/verify</div>
                     <div class="command-badge">Поддержка</div>
                 </div>
                 
-                <div class="command">
+                <div class="command animate delay-4">
                     <div class="command-name">
-                        <i class="fas fa-trash-alt"></i> /delete
+                        <i class="fas fa-search"></i> /search
                     </div>
-                    <p>Удалить своё объявление</p>
-                    <div class="command-usage">/delete 42</div>
+                    <p>Поиск товаров по категории или ключевым словам</p>
+                    <div class="command-usage">/search электроника iPhone</div>
                 </div>
                 
-                <div class="command">
+                <div class="command animate delay-5">
                     <div class="command-name">
                         <i class="fas fa-chart-pie"></i> /stats
                     </div>
@@ -848,169 +696,167 @@
                     <div class="command-usage">/stats @User</div>
                 </div>
                 
-                <div class="command">
+                <div class="command animate">
                     <div class="command-name">
-                        <i class="fas fa-search"></i> /search
+                        <i class="fas fa-trash-alt"></i> /delete
                     </div>
-                    <p>Поиск товаров по категории или ключевым словам</p>
-                    <div class="command-usage">/search electronics iPhone</div>
+                    <p>Удалить своё объявление</p>
+                    <div class="command-usage">/delete [ID объявления]</div>
                 </div>
             </div>
-        </section>
-        
-        <!-- Категории -->
-        <section id="categories">
-            <h2>Категории товаров</h2>
+        </div>
+    </section>
+    
+    <!-- Categories -->
+    <section id="categories">
+        <div class="container">
+            <h2 class="animate">Категории товаров</h2>
+            
             <div class="categories">
-                <div class="category delay-1">
+                <div class="category animate delay-1">
                     <div class="category-icon"><i class="fas fa-mobile-alt"></i></div>
                     <h3>Электроника</h3>
                     <p>Смартфоны, ноутбуки, гаджеты</p>
                 </div>
                 
-                <div class="category delay-2">
+                <div class="category animate delay-2">
                     <div class="category-icon"><i class="fas fa-tshirt"></i></div>
                     <h3>Одежда</h3>
                     <p>Одежда, обувь, аксессуары</p>
                 </div>
                 
-                <div class="category delay-3">
+                <div class="category animate delay-3">
+                    <div class="category-icon"><i class="fas fa-gamepad"></i></div>
+                    <h3>Игры</h3>
+                    <p>Аккаунты, ключи, предметы</p>
+                </div>
+                
+                <div class="category animate delay-4">
                     <div class="category-icon"><i class="fas fa-tools"></i></div>
                     <h3>Услуги</h3>
                     <p>Фриланс, ремонт, обучение</p>
                 </div>
                 
-                <div class="category">
+                <div class="category animate delay-5">
                     <div class="category-icon"><i class="fas fa-home"></i></div>
                     <h3>Недвижимость</h3>
                     <p>Аренда, покупка, продажа</p>
                 </div>
                 
-                <div class="category">
-                    <div class="category-icon"><i class="fas fa-car"></i></div>
-                    <h3>Транспорт</h3>
-                    <p>Автомобили, мотоциклы</p>
-                </div>
-                
-                <div class="category">
+                <div class="category animate">
                     <div class="category-icon"><i class="fas fa-box-open"></i></div>
                     <h3>Другое</h3>
                     <p>Все остальные товары</p>
                 </div>
             </div>
-        </section>
-        
-        <!-- Как начать -->
-        <section id="start">
-            <h2>Как начать?</h2>
-            <div class="features">
-                <div class="feature-card delay-1">
-                    <div class="feature-icon">
-                        <i class="fas fa-robot"></i>
+        </div>
+    </section>
+    
+    <!-- How it works -->
+    <section id="how-it-works" style="background: var(--darker);">
+        <div class="container">
+            <h2 class="animate">Как это работает?</h2>
+            
+            <div class="steps">
+                <div class="step animate delay-1">
+                    <div class="step-number">1</div>
+                    <div>
+                        <h3>Добавьте бота на сервер</h3>
+                        <p>Пригласите Vegas+ Market на свой Discord сервер с помощью кнопки "Добавить бота".</p>
+                        <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="btn btn-outline" style="margin-top: 1rem;">
+                            <i class="fab fa-discord"></i> Добавить бота
+                        </a>
                     </div>
-                    <h3>Добавьте бота</h3>
-                    <p>Пригласите Vegas+ Market на свой сервер Discord с помощью кнопки выше.</p>
-                    <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="btn btn-tertiary" style="margin-top: 1rem;">
-                        <i class="fab fa-discord"></i> Добавить бота
-                    </a>
                 </div>
                 
-                <div class="feature-card delay-2">
-                    <div class="feature-icon">
-                        <i class="fas fa-sliders-h"></i>
+                <div class="step animate delay-2">
+                    <div class="step-number">2</div>
+                    <div>
+                        <h3>Настройте каналы</h3>
+                        <p>Создайте отдельные каналы для объявлений, аукционов и обсуждений.</p>
                     </div>
-                    <h3>Настройте каналы</h3>
-                    <p>Создайте отдельные каналы для объявлений, аукционов и обсуждений.</p>
                 </div>
                 
-                <div class="feature-card delay-3">
-                    <div class="feature-icon">
-                        <i class="fas fa-store"></i>
+                <div class="step animate delay-3">
+                    <div class="step-number">3</div>
+                    <div>
+                        <h3>Начните продавать</h3>
+                        <p>Используйте команду /sell для создания первого объявления.</p>
+                        <div class="command-usage" style="margin-top: 1rem;">/sell категория цена - название - описание</div>
                     </div>
-                    <h3>Начните продавать</h3>
-                    <p>Используйте команду /sell для создания первого объявления.</p>
-                    <div class="command-usage" style="margin-top: 1rem;">/sell категория цена - название товара - фото</div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
     
-    <!-- Подвал -->
+    <!-- Footer -->
     <footer>
         <div class="footer-content">
-            <div class="footer-logo">VEGAS+</div>
-            
-            <div class="footer-links">
-                <a href="#features" class="footer-link">Возможности</a>
-                <a href="#commands" class="footer-link">Команды</a>
-                <a href="#categories" class="footer-link">Категории</a>
-                <a href="#start" class="footer-link">Как начать</a>
-                <a href="https://discord.gg/YCg9JXPmCN" class="footer-link">Поддержка</a>
-                <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="footer-link">Добавить бота</a>
+            <div class="footer-grid">
+                <div class="footer-links">
+                    <div class="footer-logo">VEGAS+</div>
+                    <p>Современный маркетплейс для Discord с безопасными сделками и аукционной системой.</p>
+                    <div class="social-links">
+                        <a href="https://discord.gg/YCg9JXPmCN" class="social-link"><i class="fab fa-discord"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Навигация</h3>
+                    <ul>
+                        <li><a href="#features">Возможности</a></li>
+                        <li><a href="#commands">Команды</a></li>
+                        <li><a href="#categories">Категории</a></li>
+                        <li><a href="#how-it-works">Как это работает</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Ресурсы</h3>
+                    <ul>
+                        <li><a href="https://discord.gg/YCg9JXPmCN">Поддержка</a></li>
+                        <li><a href="#">Документация</a></li>
+                        <li><a href="#">Блог</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Добавить бота</h3>
+                    <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="btn btn-primary" style="margin-top: 0.5rem;">
+                        <i class="fab fa-discord"></i> Пригласить
+                    </a>
+                </div>
             </div>
             
-            <div class="social-links">
-                <a href="https://discord.gg/YCg9JXPmCN" class="social-link"><i class="fab fa-discord"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+            <div class="copyright">
+                © 2023 Vegas+ Market Bot. Все права защищены.
             </div>
-            
-            <p class="copyright">© 2023 Vegas+ Market Bot. Все права защищены.</p>
         </div>
     </footer>
     
-    <!-- Chatra {literal} -->
     <script>
-        (function(d, w, c) {
-            w.ChatraID = 'hePBzAxuhW4Nvoz9D';
-            var s = d.createElement('script');
-            w[c] = w[c] || function() {
-                (w[c].q = w[c].q || []).push(arguments);
-            };
-            s.async = true;
-            s.src = 'https://call.chatra.io/chatra.js';
-            if (d.head) d.head.appendChild(s);
-        })(document, window, 'Chatra');
-    </script>
-    <!-- /Chatra {/literal} -->
-    
-    <script>
-        // Preloader
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                const preloader = document.getElementById('preloader');
-                preloader.style.opacity = '0';
-                preloader.style.pointerEvents = 'none';
-                
-                setTimeout(function() {
-                    preloader.style.display = 'none';
-                }, 500);
-                
-                // Анимация появления шапки
-                document.querySelector('header').classList.add('visible');
-            }, 1500);
-        });
-        
-        // Анимация появления при скролле
-        const animateOnScroll = () => {
-            const sections = document.querySelectorAll('section');
+        // Simple animation on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const animateElements = document.querySelectorAll('.animate, .animate-slide');
             
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
+                        entry.target.style.opacity = 1;
+                        entry.target.style.animationPlayState = 'running';
                     }
                 });
             }, { threshold: 0.1 });
             
-            sections.forEach(section => {
-                observer.observe(section);
+            animateElements.forEach(el => {
+                el.style.opacity = 0;
+                observer.observe(el);
             });
-        };
-        
-        // Плавная прокрутка
-        const smoothScroll = () => {
+            
+            // Smooth scroll for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -1023,12 +869,6 @@
                     }
                 });
             });
-        };
-        
-        // Инициализация
-        document.addEventListener('DOMContentLoaded', () => {
-            animateOnScroll();
-            smoothScroll();
         });
     </script>
 </body>
