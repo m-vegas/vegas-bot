@@ -3,382 +3,656 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vegas+ | Тестеры</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+    <title>Vegas+ Market Bot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --neon-blue: #33CCFF;
-            --cyber-purple: #BC00FF;
-            --matrix-green: #00FF88;
-            --deep-space: #0A0A1F;
-            --star-dust: rgba(255,255,255,0.1);
+            --primary: #2ecc71;
+            --secondary: #3498db;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --danger: #e74c3c;
+            --warning: #f39c12;
         }
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Oxanium', cursive;
         }
-
+        
         body {
-            background: var(--deep-space);
-            color: white;
-            min-height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            background-color: #1a1a2e;
+            color: var(--light);
             overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(51,204,255,0.1) 0%, transparent 30%),
-                radial-gradient(circle at 80% 70%, rgba(188,0,255,0.1) 0%, transparent 30%);
         }
-
-        /* Стили авторизации */
-        .auth-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .auth-box {
-            background: rgba(10,10,31,0.95);
-            border: 2px solid var(--matrix-green);
-            border-radius: 10px;
-            padding: 40px 30px;
-            width: 100%;
-            max-width: 380px;
-            text-align: center;
-            box-shadow: 0 0 40px rgba(0,255,136,0.2);
-            backdrop-filter: blur(8px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .auth-box::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, 
-                var(--neon-blue), 
-                var(--cyber-purple),
-                var(--matrix-green));
-            z-index: -1;
-            filter: blur(8px);
-            opacity: 0.2;
-        }
-
-        .auth-header {
-            color: var(--neon-blue);
-            margin-bottom: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .auth-header i {
-            font-size: 2.5rem;
-            color: var(--matrix-green);
-        }
-
-        .auth-header h3 {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .auth-input {
-            width: 100%;
-            padding: 14px;
-            margin-bottom: 20px;
-            background: rgba(0,0,0,0.3);
-            border: 2px solid var(--neon-blue);
-            border-radius: 6px;
-            color: white;
-            font-size: 1rem;
-            text-align: center;
-            transition: all 0.3s;
-        }
-
-        .auth-input:focus {
-            outline: none;
-            border-color: var(--matrix-green);
-            box-shadow: 0 0 15px var(--matrix-green);
-        }
-
-        .cyber-button {
-            background: linear-gradient(45deg, 
-                var(--neon-blue), 
-                var(--cyber-purple));
-            color: var(--deep-space);
-            border: none;
-            padding: 14px;
-            width: 100%;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            margin-top: 10px;
-        }
-
-        .cyber-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(51,204,255,0.4);
-        }
-
-        .cyber-button::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom right,
-                rgba(255,255,255,0) 0%,
-                rgba(255,255,255,0.1) 50%,
-                rgba(255,255,255,0) 100%
-            );
-            transform: rotate(45deg);
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
-        }
-
-        #errorMsg {
-            color: #ff4444;
-            margin-top: 15px;
-            font-size: 0.9rem;
-            display: none;
-            animation: shake 0.5s;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-5px); }
-            40%, 80% { transform: translateX(5px); }
-        }
-
-        /* Панель задания */
-        .task-panel {
-            display: none;
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 20px;
-        }
-
-        .task-card {
-            background: rgba(10,10,31,0.95);
-            border: 2px solid var(--neon-blue);
-            border-radius: 10px;
-            padding: 30px;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 0 30px rgba(51,204,255,0.2);
-        }
-
-        .task-header {
-            color: var(--matrix-green);
-            margin-bottom: 25px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .task-header i {
-            font-size: 2.2rem;
-        }
-
-        .task-header h2 {
-            font-size: 1.8rem;
-        }
-
-        .task-content {
-            text-align: left;
-            margin: 25px 0;
-            padding: 0 15px;
-        }
-
-        .task-content h3 {
-            color: var(--neon-blue);
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-
-        .task-content p {
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .task-content ul {
-            padding-left: 25px;
-            margin-top: 15px;
-        }
-
-        .task-content li {
-            margin-bottom: 10px;
-            position: relative;
-            list-style-type: none;
-        }
-
-        .task-content li::before {
-            content: '•';
-            color: var(--matrix-green);
-            font-size: 1.5rem;
-            position: absolute;
-            left: -20px;
-            top: -5px;
-        }
-
-        .discord-link {
+        
+        .particles-js {
             position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: #5865F2;
-            padding: 12px 20px;
-            border-radius: 6px;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        header {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px rgba(46, 204, 113, 0.5);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(46, 204, 113, 0.8), 0 0 30px rgba(46, 204, 113, 0.6);
+            }
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--secondary);
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
             text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
             color: white;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.6);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.6);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        section {
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+        
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .command-list {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .command {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .command:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .command-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-weight: bold;
-            transition: all 0.3s;
-            z-index: 10;
+            gap: 0.5rem;
         }
-
-        .discord-link:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(88,101,242,0.4);
+        
+        .command-desc {
+            margin-bottom: 0.5rem;
         }
-
+        
+        .command-usage {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-family: monospace;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+        
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .category {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .category:hover {
+            transform: scale(1.05);
+            background: rgba(46, 204, 113, 0.1);
+            border-color: var(--primary);
+        }
+        
+        .category-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        footer {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 3rem 0;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-link {
+            color: var(--light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: var(--primary);
+        }
+        
+        .copyright {
+            margin-top: 2rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
         @media (max-width: 768px) {
-            .auth-box {
-                padding: 30px 20px;
+            .logo {
+                font-size: 2.5rem;
             }
             
-            .task-panel {
-                padding: 15px;
+            .tagline {
+                font-size: 1.2rem;
             }
             
-            .discord-link {
-                right: 50%;
-                transform: translateX(50%);
-                bottom: 20px;
-                width: 90%;
-                max-width: 300px;
-                justify-content: center;
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
             }
         }
-
-        @media (max-width: 480px) {
-            .auth-header h3 {
-                font-size: 1.3rem;
+        
+        /* Анимации */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
             }
-            
-            .auth-input {
-                padding: 12px;
-                font-size: 0.9rem;
+            50% {
+                transform: translateY(-10px);
             }
-            
-            .cyber-button {
-                padding: 12px;
-                font-size: 0.9rem;
-            }
-            
-            .task-header h2 {
-                font-size: 1.5rem;
-            }
-            
-            .task-content {
-                padding: 0 10px;
-            }
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .delay-1 {
+            transition-delay: 0.2s;
+        }
+        
+        .delay-2 {
+            transition-delay: 0.4s;
+        }
+        
+        .delay-3 {
+            transition-delay: 0.6s;
         }
     </style>
 </head>
 <body>
-    <!-- Форма авторизации -->
-    <div class="auth-container">
-        <div class="auth-box">
-            <div class="auth-header">
-                <i class="fas fa-user-secret"></i>
-                <h3>Vegas+ Tester Access</h3>
-            </div>
-            <input 
-                type="password" 
-                class="auth-input" 
-                placeholder="Введите ключ доступа"
-                id="adminPassword"
-            >
-            <button class="cyber-button" onclick="checkAuth(event)">
-                Войти
-            </button>
-            <p id="errorMsg">Неверный ключ доступа!</p>
-        </div>
-    </div>
-
-    <!-- Панель задания -->
-    <div class="task-panel" id="taskPanel">
-        <div class="task-card">
-            <div class="task-header">
-                <i class="fas fa-tasks"></i>
-                <h2>Задание для тестирования</h2>
-            </div>
+    <div id="particles-js" class="particles-js"></div>
+    
+    <header>
+        <div class="header-content">
+            <h1 class="logo floating">Vegas+ Market</h1>
+            <p class="tagline">Продвинутый маркетплейс для вашего Discord-сервера</p>
             
-            <div class="task-content">
-                <h3>Статус: в обработке</h3>
-                <p><i class="fas fa-calendar-alt"></i> Дата: 25.05.2025</p>
-                <p><i class="fas fa-tools"></i> Требования:</p>
-                <ul>
-                    <li>Отдыхай , работы нет :)</li>
-                </ul>
+            <div class="buttons">
+                <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="btn btn-primary">
+                    <i class="fab fa-discord"></i> Добавить бота
+                </a>
+                <a href="https://discord.gg/YCg9JXPmCN" class="btn btn-secondary">
+                    <i class="fas fa-headset"></i> Техподдержка
+                </a>
             </div>
-
-            <a href="" class="cyber-button" download>
-                <i class="fas fa-download"></i> Скачать (v1.0.0)
+        </div>
+    </header>
+    
+    <div class="container">
+        <section id="features">
+            <h2>Возможности бота</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <h3 class="feature-title">Маркетплейс</h3>
+                    <p>Полноценная система продажи товаров и услуг прямо в Discord с удобной категоризацией.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-gavel"></i>
+                    </div>
+                    <h3 class="feature-title">Аукционы</h3>
+                    <p>Система аукционов с автоматическим отслеживанием ставок и уведомлениями.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Модерация</h3>
+                    <p>Встроенная система жалоб и проверки продавцов для безопасности сделок.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="feature-title">Рейтинги</h3>
+                    <p>Система отзывов и рейтингов продавцов для прозрачности сделок.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3 class="feature-title">Уведомления</h3>
+                    <p>Умная система уведомлений о новых ставках, покупках и жалобах.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">Статистика</h3>
+                    <p>Подробная статистика по продажам, просмотрам и активности пользователей.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="commands">
+            <h2>Команды бота</h2>
+            <div class="command-list">
+                <div class="command">
+                    <div class="command-name">
+                        <i class="fas fa-tag"></i> /sell
+                    </div>
+                    <div class="command-desc">Создать новое объявление о продаже товара или услуги.</div>
+                    <div class="command-usage">/sell &lt;категория&gt; &lt;цена&gt; &lt;описание&gt; [URL фото]</div>
+                </div>
+                
+                <div class="command">
+                    <div class="command-name">
+                        <i class="fas fa-gavel"></i> /bid
+                    </div>
+                    <div class="command-desc">Сделать ставку на аукцион.</div>
+                    <div class="command-usage">/bid &lt;ID объявления&gt; &lt;ставка&gt;</div>
+                </div>
+                
+                <div class="command">
+                    <div class="command-name">
+                        <i class="fas fa-star"></i> /review
+                    </div>
+                    <div class="command-desc">Оставить отзыв о продавце.</div>
+                    <div class="command-usage">/review @username +/- комментарий</div>
+                </div>
+                
+                <div class="command">
+                    <div class="command-name">
+                        <i class="fas fa-chart-bar"></i> /stats
+                    </div>
+                    <div class="command-desc">Просмотреть статистику пользователя.</div>
+                    <div class="command-usage">/stats [@username]</div>
+                </div>
+                
+                <div class="command">
+                    <div class="command-name">
+                        <i class="fas fa-check-circle"></i> /verify
+                    </div>
+                    <div class="command-desc">(Админ) Верифицировать продавца.</div>
+                    <div class="command-usage">/verify @username</div>
+                </div>
+                
+                <div class="command">
+                    <div class="command-name">
+                        <i class="fas fa-trash"></i> /delete
+                    </div>
+                    <div class="command-desc">(Админ) Удалить объявление.</div>
+                    <div class="command-usage">/delete &lt;ID объявления&gt;</div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="categories">
+            <h2>Категории товаров</h2>
+            <div class="categories">
+                <div class="category">
+                    <div class="category-icon">📱</div>
+                    <h3>Электроника</h3>
+                </div>
+                
+                <div class="category">
+                    <div class="category-icon">👕</div>
+                    <h3>Одежда</h3>
+                </div>
+                
+                <div class="category">
+                    <div class="category-icon">🛠️</div>
+                    <h3>Услуги</h3>
+                </div>
+                
+                <div class="category">
+                    <div class="category-icon">🏠</div>
+                    <h3>Недвижимость</h3>
+                </div>
+                
+                <div class="category">
+                    <div class="category-icon">🚗</div>
+                    <h3>Транспорт</h3>
+                </div>
+                
+                <div class="category">
+                    <div class="category-icon">📦</div>
+                    <h3>Другое</h3>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <div class="footer-links">
+            <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="footer-link">
+                <i class="fab fa-discord"></i> Добавить бота
+            </a>
+            <a href="https://discord.gg/YCg9JXPmCN" class="footer-link">
+                <i class="fas fa-headset"></i> Поддержка
+            </a>
+            <a href="#features" class="footer-link">
+                <i class="fas fa-star"></i> Возможности
+            </a>
+            <a href="#commands" class="footer-link">
+                <i class="fas fa-code"></i> Команды
             </a>
         </div>
-
-        <a href="https://discord.gg/YCg9JXPmCN" 
-           class="discord-link"
-           target="_blank">
-            <i class="fab fa-discord"></i> Поддержка в Discord
-        </a>
-    </div>
-
+        
+        <p class="copyright">© 2023 Vegas+ Market Bot. Все права защищены.</p>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Авторизация
-        const validHash = '5f4dcc3b5aa765d61d8327deb882cf99'; // MD5: password
-
-        function checkAuth(event) {
-            event.preventDefault();
-            const password = document.getElementById('adminPassword').value.trim();
-            const errorMsg = document.getElementById('errorMsg');
-
-            if(md5(password).toLowerCase() === validHash.toLowerCase()) {
-                document.querySelector('.auth-container').style.display = 'none';
-                document.getElementById('taskPanel').style.display = 'block';
-            } else {
-                errorMsg.style.display = 'block';
-                document.getElementById('adminPassword').value = '';
+        // Инициализация частиц
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#2ecc71"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": false,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#3498db",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 2,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+        
+        // Анимация появления секций при скролле
+        const sections = document.querySelectorAll('section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        sections.forEach((section, index) => {
+            observer.observe(section);
+            if (index > 0) {
+                section.classList.add(`delay-${index}`);
             }
-        }
-
-        // Обработчик Enter
-        document.getElementById('adminPassword').addEventListener('keypress', (e) => {
-            if(e.key === 'Enter') checkAuth(e);
+        });
+        
+        // Плавная прокрутка для якорных ссылок
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
         });
     </script>
 </body>
