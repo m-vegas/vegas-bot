@@ -9,6 +9,219 @@
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* DDoS Protection Loader Styles */
+        a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,main,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{
+            margin:0;
+            padding:0;
+            border:0;
+            font-size:100%;
+            font:inherit;
+            vertical-align:baseline
+        }
+        article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section{
+            display:block
+        }
+        [hidden]{
+            display:none
+        }
+        body{
+            line-height:1
+        }
+        menu,ol,ul{
+            list-style:none
+        }
+        blockquote,q{
+            quotes:none
+        }
+        blockquote:after,blockquote:before,q:after,q:before{
+            content:"";
+            content:none
+        }
+        table{
+            border-collapse:collapse;
+            border-spacing:0
+        }
+        .react-loader{
+            background:#19171a;
+            width:100vw;
+            height:100vh;
+            box-sizing:border-box;
+            font-family:SF Pro Display,Myriad Set Pro,SF Pro Icons,Helvetica Neue,Helvetica,Arial,sans-serif;
+            position:fixed;
+            top:0;
+            left:0;
+            z-index:9999;
+        }
+        .react-loader__main-information{
+            position:absolute;
+            left:50%;
+            top:50%;
+            transform:translate(-50%,-50%);
+            width:100%;
+            max-width:90%
+        }
+        .react-loader__title{
+            text-align:center;
+            font-weight:600;
+            color:#fff;
+            font-size:6.4rem
+        }
+        .react-loader__description{
+            font-size:1.8rem;
+            font-weight:400;
+            color:hsla(0,0%,100%,.8);
+            text-align:center;
+            margin-top:30px
+        }
+        .react-loader__description-smile{
+            width:30px;
+            margin-left:10px;
+            vertical-align:middle
+        }
+        .react-loader__copyright{
+            display:inline-block;
+            padding:13px 25px;
+            border-radius:10px;
+            background:rgba(17,17,17,.5);
+            font-size:1.8rem;
+            font-width:400;
+            color:#fff;
+            position:fixed;
+            bottom:60px;
+            left:50%;
+            transform:translateX(-50%);
+            text-decoration:inherit;
+            white-space:nowrap
+        }
+        .react-loader__copyright-smile{
+            width:18px;
+            margin-left:5px;
+            vertical-align:middle
+        }
+        .react-loader__left-gradient-wrapper{
+            width:490px;
+            height:390px;
+            position:fixed;
+            bottom:-130px;
+            left:50%;
+            transform:translateX(-100%);
+            animation:left-gradient-animation 5s ease-in-out infinite
+        }
+        .react-loader__left-small-gradient{
+            position:absolute;
+            top:0;
+            left:50%;
+            transform:matrix(-1,0,0,1,0,0) translateX(0);
+            border-radius:50%;
+            width:280px;
+            height:200px;
+            background:linear-gradient(180deg,#ff08ab,rgba(245,138,37,0) 100%,rgba(112,97,163,0) 0);
+            filter:blur(45px)
+        }
+        .react-loader__left-big-gradient{
+            position:absolute;
+            bottom:0;
+            left:50%;
+            transform:matrix(-1,0,0,1,0,0) translateX(50%);
+            border-radius:50%;
+            width:490px;
+            height:360px;
+            background:linear-gradient(180deg,#fc50b7,rgba(255,197,111,.46));
+            filter:blur(100px)
+        }
+        .react-loader__right-gradient-wrapper{
+            width:410px;
+            height:430px;
+            position:fixed;
+            bottom:-155px;
+            right:50%;
+            transform:translateX(100%);
+            animation:right-gradient-animation 5s ease-in-out infinite
+        }
+        .react-loader__right-small-gradient{
+            bottom:0;
+            width:315px;
+            height:255px;
+            background:linear-gradient(180.06deg,rgba(153,0,191,.28) -18.19%,rgba(0,78,228,.52) 110.13%);
+            filter:blur(45px)
+        }
+        .react-loader__right-big-gradient,.react-loader__right-small-gradient{
+            position:absolute;
+            left:0;
+            transform:matrix(1,0,0,-1,0,0);
+            border-radius:50%
+        }
+        .react-loader__right-big-gradient{
+            top:0;
+            width:413px;
+            height:317px;
+            background:linear-gradient(180.01deg,rgba(0,9,213,.65) -8.02%,#64ffb2 85.64%);
+            filter:blur(100px)
+        }
+        @keyframes right-gradient-animation{
+            0%{
+                transform:translateX(100%)
+            }
+            50%{
+                transform:translateX(0)
+            }
+            to{
+                transform:translateX(100%)
+            }
+        }
+        @keyframes left-gradient-animation{
+            0%{
+                transform:translateX(-100%)
+            }
+            50%{
+                transform:translateX(0)
+            }
+            to{
+                transform:translateX(-100%)
+            }
+        }
+        @media screen and (max-width:550px){
+            html{
+                font-size:7px
+            }
+        }
+        @media screen and (max-width:500px){
+            .react-loader__left-gradient-wrapper{
+                animation:left-gradient-animation-small 3s ease-in-out infinite
+            }
+            .react-loader__right-gradient-wrapper{
+                animation:right-gradient-animation-small 3s ease-in-out infinite
+            }
+            @keyframes right-gradient-animation-small{
+                0%{
+                    transform:translateX(100%)
+                }
+                50%{
+                    transform:translateX(90%)
+                }
+                to{
+                    transform:translateX(100%)
+                }
+            }
+            @keyframes left-gradient-animation-small{
+                0%{
+                    transform:translateX(-100%)
+                }
+                50%{
+                    transform:translateX(-90%)
+                }
+                to{
+                    transform:translateX(-100%)
+                }
+            }
+        }
+        @media screen and (max-width:362px){
+            .react-loader__description-smile{
+                margin-top:20px
+            }
+        }
+
+        /* Main Content Styles */
         :root {
             --black: #000000;
             --white: #FFFFFF;
@@ -513,280 +726,311 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="particles" id="particles"></div>
-        
-        <div class="container">
-            <div class="header-content" data-animate>
-                <h1>VEGAS+ MARKET</h1>
-                <p class="tagline">Самый мощный маркетплейс для Discord с аукционами и безопасными сделками</p>
-                
-                <div class="buttons">
-                    <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="btn btn-primary">
-                        <i class="fab fa-discord"></i> Добавить бота
-                    </a>
-                    <a href="https://discord.gg/YCg9JXPmCN" class="btn btn-secondary">
-                        <i class="fas fa-arrow-right"></i> Подробнее
-                    </a>
-                </div>
-            </div>
+    <!-- DDoS Protection Loader -->
+    <div class="react-loader" id="ddos-loader">
+        <div class="react-loader__left-gradient-wrapper">
+            <div class="react-loader__left-small-gradient"></div>
+            <div class="react-loader__left-big-gradient"></div>
         </div>
-    </header>
+        <div class="react-loader__right-gradient-wrapper">
+            <div class="react-loader__right-big-gradient"></div>
+            <div class="react-loader__right-small-gradient"></div>
+        </div>
+        <div class="react-loader__main-information">
+            <p class="react-loader__title">Проверяем ваш запрос,<br>подождите немного ...</p>
+            <p class="react-loader__description">Это автоматический процесс, просто подождите пару секунд. <img class="react-loader__description-smile" src="https://i.cdnreact.xyz/23.png"></p>
+        </div>
+        <a class="react-loader__copyright" href="https://www.react.su" target="_blank">DDoS protection by React<img class="react-loader__copyright-smile" src="https://i.cdnreact.xyz/21.png"></a>
+    </div>
 
-    <!-- Features -->
-    <section id="features">
-        <div class="container">
-            <h2 data-animate>Что делает нас лучшими?</h2>
+    <!-- Main Content (hidden initially) -->
+    <div id="main-content" style="display: none;">
+        <!-- Header -->
+        <header>
+            <div class="particles" id="particles"></div>
             
-            <div class="features">
-                <div class="feature-card" data-animate>
-                    <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3>Молниеносные сделки</h3>
-                    <p>Покупайте и продавайте в пару кликов без лишних движений и ожиданий.</p>
-                </div>
-                
-                <div class="feature-card" data-animate class="delay-1">
-                    <div class="feature-icon">
-                        <i class="fas fa-gavel"></i>
-                    </div>
-                    <h3>Аукционы</h3>
-                    <p>Создавайте аукционы с автоматическим определением победителя.</p>
-                </div>
-                
-                <div class="feature-card" data-animate class="delay-2">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>100% безопасность</h3>
-                    <p>Встроенная защита от мошенников и система гарантий.</p>
-                </div>
-                
-                <div class="feature-card" data-animate class="delay-3">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Подробная аналитика</h3>
-                    <p>Отслеживайте статистику продаж и покупательскую активность.</p>
-                </div>
-                
-                <div class="feature-card" data-animate class="delay-4">
-                    <div class="feature-icon">
-                        <i class="fas fa-bell"></i>
-                    </div>
-                    <h3>Умные уведомления</h3>
-                    <p>Получайте оповещения о новых ставках и сообщениях.</p>
-                </div>
-                
-                <div class="feature-card" data-animate class="delay-5">
-                    <div class="feature-icon">
-                        <i class="fas fa-sliders-h"></i>
-                    </div>
-                    <h3>Гибкие настройки</h3>
-                    <p>Полный контроль для админов сервера.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Commands -->
-    <section id="commands" style="background: var(--card-bg);">
-        <div class="container">
-            <h2 data-animate>Основные команды</h2>
-            
-            <div class="command-list">
-                <div class="command" data-animate>
-                    <div class="command-name">
-                        <i class="fas fa-tag"></i> /sell
-                    </div>
-                    <p>Создать новое объявление о продаже</p>
-                    <div class="command-usage">/sell [категория] [цена] - [название]</div>
-                </div>
-                
-                <div class="command" data-animate class="delay-1">
-                    <div class="command-name">
-                        <i class="fas fa-gavel"></i> /bid
-                    </div>
-                    <p>Сделать ставку на аукцион</p>
-                    <div class="command-usage">/bid [ID] [сумма]</div>
-                </div>
-                
-                <div class="command" data-animate class="delay-2">
-                    <div class="command-name">
-                        <i class="fas fa-check-circle"></i> /verify
-                    </div>
-                    <p>Верификация продавца через техподдержку</p>
-                    <div class="command-usage">/verify</div>
-                </div>
-                
-                <div class="command" data-animate class="delay-3">
-                    <div class="command-name">
-                        <i class="fas fa-search"></i> /search
-                    </div>
-                    <p>Поиск товаров</p>
-                    <div class="command-usage">/search [запрос]</div>
-                </div>
-                
-                <div class="command" data-animate class="delay-4">
-                    <div class="command-name">
-                        <i class="fas fa-chart-pie"></i> /stats
-                    </div>
-                    <p>Статистика пользователя</p>
-                    <div class="command-usage">/stats @User</div>
-                </div>
-                
-                <div class="command" data-animate class="delay-5">
-                    <div class="command-name">
-                        <i class="fas fa-trash-alt"></i> /delete
-                    </div>
-                    <p>Удалить объявление</p>
-                    <div class="command-usage">/delete [ID]</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Support Section -->
-    <section id="support">
-        <div class="container">
-            <div class="support-section" data-animate>
-                <div class="support-content">
-                    <h2 class="support-title">Техническая поддержка 24/7</h2>
-                    <p>Наша команда поддержки работает круглосуточно, чтобы решить любые ваши вопросы. Свяжитесь с нами прямо на сайте или через Discord.</p>
+            <div class="container">
+                <div class="header-content" data-animate>
+                    <h1>VEGAS+ MARKET</h1>
+                    <p class="tagline">Самый мощный маркетплейс для Discord с аукционами и безопасными сделками</p>
                     
-                    <div class="support-features">
-                        <div class="support-feature">
-                            <i class="fas fa-headset"></i>
-                            <div>
-                                <h3>Мгновенная помощь</h3>
-                                <p>Онлайн-чат с поддержкой в реальном времени</p>
-                            </div>
+                    <div class="buttons">
+                        <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="btn btn-primary">
+                            <i class="fab fa-discord"></i> Добавить бота
+                        </a>
+                        <a href="https://discord.gg/YCg9JXPmCN" class="btn btn-secondary">
+                            <i class="fas fa-arrow-right"></i> Подробнее
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Features -->
+        <section id="features">
+            <div class="container">
+                <h2 data-animate>Что делает нас лучшими?</h2>
+                
+                <div class="features">
+                    <div class="feature-card" data-animate>
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
                         </div>
-                        
-                        <div class="support-feature">
-                            <i class="fas fa-user-shield"></i>
-                            <div>
-                                <h3>Верификация</h3>
-                                <p>Помощь в проверке продавцов и покупателей</p>
-                            </div>
-                        </div>
-                        
-                        <div class="support-feature">
-                            <i class="fas fa-ban"></i>
-                            <div>
-                                <h3>Блокировки</h3>
-                                <p>Решение спорных ситуаций и блокировка нарушителей</p>
-                            </div>
-                        </div>
-                        
-                        <div class="support-feature">
-                            <i class="fas fa-trash"></i>
-                            <div>
-                                <h3>Модерация</h3>
-                                <p>Удаление недобросовестных объявлений</p>
-                            </div>
-                        </div>
+                        <h3>Молниеносные сделки</h3>
+                        <p>Покупайте и продавайте в пару кликов без лишних движений и ожиданий.</p>
                     </div>
                     
-                    <a href="https://discord.gg/YCg9JXPmCN" class="btn btn-accent" style="margin-top: 2rem;">
-                        <i class="fab fa-discord"></i> Написать в поддержку
-                    </a>
+                    <div class="feature-card" data-animate class="delay-1">
+                        <div class="feature-icon">
+                            <i class="fas fa-gavel"></i>
+                        </div>
+                        <h3>Аукционы</h3>
+                        <p>Создавайте аукционы с автоматическим определением победителя.</p>
+                    </div>
+                    
+                    <div class="feature-card" data-animate class="delay-2">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>100% безопасность</h3>
+                        <p>Встроенная защита от мошенников и система гарантий.</p>
+                    </div>
+                    
+                    <div class="feature-card" data-animate class="delay-3">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Подробная аналитика</h3>
+                        <p>Отслеживайте статистику продаж и покупательскую активность.</p>
+                    </div>
+                    
+                    <div class="feature-card" data-animate class="delay-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <h3>Умные уведомления</h3>
+                        <p>Получайте оповещения о новых ставках и сообщениях.</p>
+                    </div>
+                    
+                    <div class="feature-card" data-animate class="delay-5">
+                        <div class="feature-icon">
+                            <i class="fas fa-sliders-h"></i>
+                        </div>
+                        <h3>Гибкие настройки</h3>
+                        <p>Полный контроль для админов сервера.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- How it works -->
-    <section id="how-it-works">
-        <div class="container">
-            <h2 data-animate>Как начать?</h2>
-            
-            <div class="steps">
-                <div class="step" data-animate>
-                    <div class="step-number">1</div>
-                    <div>
-                        <h3>Добавьте бота</h3>
-                        <p>Пригласите Vegas+ Market на свой сервер Discord одной кнопкой.</p>
-                        <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="btn btn-accent" style="margin-top: 1rem;">
-                            <i class="fab fa-discord"></i> Добавить сейчас
+        <!-- Commands -->
+        <section id="commands" style="background: var(--card-bg);">
+            <div class="container">
+                <h2 data-animate>Основные команды</h2>
+                
+                <div class="command-list">
+                    <div class="command" data-animate>
+                        <div class="command-name">
+                            <i class="fas fa-tag"></i> /sell
+                        </div>
+                        <p>Создать новое объявление о продаже</p>
+                        <div class="command-usage">/sell [категория] [цена] - [название]</div>
+                    </div>
+                    
+                    <div class="command" data-animate class="delay-1">
+                        <div class="command-name">
+                            <i class="fas fa-gavel"></i> /bid
+                        </div>
+                        <p>Сделать ставку на аукцион</p>
+                        <div class="command-usage">/bid [ID] [сумма]</div>
+                    </div>
+                    
+                    <div class="command" data-animate class="delay-2">
+                        <div class="command-name">
+                            <i class="fas fa-check-circle"></i> /verify
+                        </div>
+                        <p>Верификация продавца через техподдержку</p>
+                        <div class="command-usage">/verify</div>
+                    </div>
+                    
+                    <div class="command" data-animate class="delay-3">
+                        <div class="command-name">
+                            <i class="fas fa-search"></i> /search
+                        </div>
+                        <p>Поиск товаров</p>
+                        <div class="command-usage">/search [запрос]</div>
+                    </div>
+                    
+                    <div class="command" data-animate class="delay-4">
+                        <div class="command-name">
+                            <i class="fas fa-chart-pie"></i> /stats
+                        </div>
+                        <p>Статистика пользователя</p>
+                        <div class="command-usage">/stats @User</div>
+                    </div>
+                    
+                    <div class="command" data-animate class="delay-5">
+                        <div class="command-name">
+                            <i class="fas fa-trash-alt"></i> /delete
+                        </div>
+                        <p>Удалить объявление</p>
+                        <div class="command-usage">/delete [ID]</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Support Section -->
+        <section id="support">
+            <div class="container">
+                <div class="support-section" data-animate>
+                    <div class="support-content">
+                        <h2 class="support-title">Техническая поддержка 24/7</h2>
+                        <p>Наша команда поддержки работает круглосуточно, чтобы решить любые ваши вопросы. Свяжитесь с нами прямо на сайте или через Discord.</p>
+                        
+                        <div class="support-features">
+                            <div class="support-feature">
+                                <i class="fas fa-headset"></i>
+                                <div>
+                                    <h3>Мгновенная помощь</h3>
+                                    <p>Онлайн-чат с поддержкой в реальном времени</p>
+                                </div>
+                            </div>
+                            
+                            <div class="support-feature">
+                                <i class="fas fa-user-shield"></i>
+                                <div>
+                                    <h3>Верификация</h3>
+                                    <p>Помощь в проверке продавцов и покупателей</p>
+                                </div>
+                            </div>
+                            
+                            <div class="support-feature">
+                                <i class="fas fa-ban"></i>
+                                <div>
+                                    <h3>Блокировки</h3>
+                                    <p>Решение спорных ситуаций и блокировка нарушителей</p>
+                                </div>
+                            </div>
+                            
+                            <div class="support-feature">
+                                <i class="fas fa-trash"></i>
+                                <div>
+                                    <h3>Модерация</h3>
+                                    <p>Удаление недобросовестных объявлений</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="https://discord.gg/YCg9JXPmCN" class="btn btn-accent" style="margin-top: 2rem;">
+                            <i class="fab fa-discord"></i> Написать в поддержку
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How it works -->
+        <section id="how-it-works">
+            <div class="container">
+                <h2 data-animate>Как начать?</h2>
+                
+                <div class="steps">
+                    <div class="step" data-animate>
+                        <div class="step-number">1</div>
+                        <div>
+                            <h3>Добавьте бота</h3>
+                            <p>Пригласите Vegas+ Market на свой сервер Discord одной кнопкой.</p>
+                            <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="btn btn-accent" style="margin-top: 1rem;">
+                                <i class="fab fa-discord"></i> Добавить сейчас
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="step" data-animate class="delay-1">
+                        <div class="step-number">2</div>
+                        <div>
+                            <h3>Настройте каналы</h3>
+                            <p>Создайте отдельные каналы для объявлений и аукционов.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step" data-animate class="delay-2">
+                        <div class="step-number">3</div>
+                        <div>
+                            <h3>Начните продавать</h3>
+                            <p>Используйте команду /sell для первого объявления.</p>
+                            <div class="command-usage" style="margin-top: 1rem;">/sell [категория] [цена] - [название]</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-links">
+                        <div class="footer-logo">VEGAS+</div>
+                        <p>Самый мощный маркетплейс для Discord с аукционами и безопасными сделками.</p>
+                        <div class="social-links">
+                            <a href="https://discord.gg/YCg9JXPmCN" class="social-link"><i class="fab fa-discord"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-links">
+                        <h3>Навигация</h3>
+                        <ul>
+                            <li><a href="#features">Возможности</a></li>
+                            <li><a href="#commands">Команды</a></li>
+                            <li><a href="#support">Поддержка</a></li>
+                            <li><a href="#how-it-works">Как начать</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-links">
+                        <h3>Поддержка</h3>
+                        <ul>
+                            <li><a href="https://discord.gg/YCg9JXPmCN">Discord сервер</a></li>
+                            <li><a href="#">Документация</a></li>
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Контакты</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-links">
+                        <h3>Добавить бота</h3>
+                        <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="btn btn-primary">
+                            <i class="fab fa-discord"></i> Пригласить
                         </a>
                     </div>
                 </div>
                 
-                <div class="step" data-animate class="delay-1">
-                    <div class="step-number">2</div>
-                    <div>
-                        <h3>Настройте каналы</h3>
-                        <p>Создайте отдельные каналы для объявлений и аукционов.</p>
-                    </div>
-                </div>
-                
-                <div class="step" data-animate class="delay-2">
-                    <div class="step-number">3</div>
-                    <div>
-                        <h3>Начните продавать</h3>
-                        <p>Используйте команду /sell для первого объявления.</p>
-                        <div class="command-usage" style="margin-top: 1rem;">/sell [категория] [цена] - [название]</div>
-                    </div>
+                <div class="copyright">
+                    © 2025 Vegas+ Market. Все права защищены.
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-links">
-                    <div class="footer-logo">VEGAS+</div>
-                    <p>Самый мощный маркетплейс для Discord с аукционами и безопасными сделками.</p>
-                    <div class="social-links">
-                        <a href="https://discord.gg/YCg9JXPmCN" class="social-link"><i class="fab fa-discord"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    </div>
-                </div>
-                
-                <div class="footer-links">
-                    <h3>Навигация</h3>
-                    <ul>
-                        <li><a href="#features">Возможности</a></li>
-                        <li><a href="#commands">Команды</a></li>
-                        <li><a href="#support">Поддержка</a></li>
-                        <li><a href="#how-it-works">Как начать</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-links">
-                    <h3>Поддержка</h3>
-                    <ul>
-                        <li><a href="https://discord.gg/YCg9JXPmCN">Discord сервер</a></li>
-                        <li><a href="#">Документация</a></li>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Контакты</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-links">
-                    <h3>Добавить бота</h3>
-                    <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="btn btn-primary">
-                        <i class="fab fa-discord"></i> Пригласить
-                    </a>
-                </div>
-            </div>
-            
-            <div class="copyright">
-                © 2025 Vegas+ Market. Все права защищены.
-            </div>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <!-- JivoSite Widget -->
     <script src="//code.jivo.ru/widget/wzdP1HcdVx" async></script>
 
     <script>
+        // Show main content after delay (simulating DDoS check)
+        setTimeout(function() {
+            document.getElementById('ddos-loader').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            
+            // Initialize your scripts after content is shown
+            initParticles();
+            initAnimations();
+            initSmoothScroll();
+        }, 3000); // 3 seconds delay for the loader
+
         // Particles effect
         function initParticles() {
             const container = document.getElementById('particles');
@@ -847,14 +1091,6 @@
                 });
             });
         }
-
-        // Initialize everything
-        document.addEventListener('DOMContentLoaded', function() {
-            initParticles();
-            initAnimations();
-            initSmoothScroll();
-        });
     </script>
 </body>
 </html>
-
