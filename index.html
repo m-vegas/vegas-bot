@@ -3,214 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vegas+ Market | Discord Marketplace Bot</title>
+    <title>VEGAS+ | Крутой маркетплейс для Discord</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #6C5CE7;
-            --primary-light: #A29BFE;
-            --primary-dark: #5649C0;
-            --secondary: #00B894;
-            --secondary-light: #55EFC4;
-            --dark: #1A1A2E;
-            --darker: #16213E;
-            --light: #F1F1F1;
-            --gray: #B8B8B8;
-            --dark-gray: #4A4A68;
-            --success: #00B894;
-            --warning: #FDCB6E;
-            --danger: #D63031;
-            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
-            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-            --shadow-lg: 0 10px 25px rgba(0,0,0,0.2);
-            --border-radius: 12px;
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --black: #000000;
+            --white: #FFFFFF;
+            --primary: #FF3D00;
+            --primary-dark: #DD2C00;
+            --secondary: #00E5FF;
+            --accent: #FFC400;
+            --bg: #0A0A0A;
+            --card-bg: #121212;
+            --text: #E0E0E0;
+            --text-secondary: #9E9E9E;
+            --border: rgba(255,255,255,0.1);
+            --success: #00E676;
+            --error: #FF5252;
+            --radius: 12px;
+            --shadow: 0 8px 32px rgba(0,0,0,0.3);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--dark);
-            color: var(--light);
+            font-family: 'Red Hat Display', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
-        
-        /* Typography */
+
+        ::selection {
+            background: var(--primary);
+            color: var(--white);
+        }
+
         h1, h2, h3, h4 {
-            font-weight: 700;
+            font-weight: 900;
             line-height: 1.2;
         }
-        
+
         h1 {
-            font-size: 3.5rem;
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
-        
+
         h2 {
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 6vw, 3rem);
             margin-bottom: 2rem;
         }
-        
+
         h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
         }
-        
+
         p {
-            color: var(--gray);
+            color: var(--text-secondary);
             font-size: 1.1rem;
             margin-bottom: 1.5rem;
         }
-        
+
         a {
             text-decoration: none;
             color: inherit;
             transition: var(--transition);
         }
-        
-        /* Layout */
+
         .container {
-            max-width: 1200px;
+            width: 100%;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0 2rem;
         }
-        
+
         section {
-            padding: 6rem 0;
+            padding: 8rem 0;
             position: relative;
         }
-        
-        /* Buttons */
+
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 0.75rem;
             padding: 1rem 2rem;
-            border-radius: var(--border-radius);
-            font-weight: 600;
+            border-radius: var(--radius);
+            font-weight: 700;
             font-size: 1rem;
             transition: var(--transition);
             border: none;
             cursor: pointer;
             white-space: nowrap;
         }
-        
+
         .btn-primary {
-            background: var(--gradient);
-            color: white;
-            box-shadow: var(--shadow-md);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .btn-secondary {
-            background: var(--darker);
-            color: white;
-            border: 1px solid var(--glass-border);
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.05);
-            transform: translateY(-2px);
-        }
-        
-        .btn-outline {
-            background: transparent;
-            color: var(--light);
-            border: 2px solid var(--primary);
-        }
-        
-        .btn-outline:hover {
             background: var(--primary);
-            color: white;
+            color: var(--white);
+            box-shadow: 0 4px 20px rgba(255, 61, 0, 0.3);
         }
-        
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 61, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: var(--black);
+            font-weight: 800;
+        }
+
+        .btn-accent:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 196, 0, 0.4);
+        }
+
         /* Header */
         header {
-            padding: 8rem 0 6rem;
-            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
             position: relative;
             overflow: hidden;
+            padding: 6rem 0;
         }
-        
+
         .header-content {
-            max-width: 800px;
-            margin: 0 auto;
             position: relative;
-            z-index: 2;
+            z-index: 10;
+            max-width: 800px;
         }
-        
-        .logo {
-            font-size: 4rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            line-height: 1;
-        }
-        
+
         .tagline {
-            font-size: 1.5rem;
-            margin-bottom: 3rem;
-            color: var(--gray);
-            opacity: 0.9;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            margin: 2rem 0 3rem;
+            color: var(--text-secondary);
         }
-        
+
         .buttons {
             display: flex;
-            justify-content: center;
             gap: 1.5rem;
             margin-top: 3rem;
             flex-wrap: wrap;
         }
-        
+
+        /* Particles */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--primary);
+            opacity: 0.5;
+            filter: blur(1px);
+        }
+
         /* Features */
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
         }
-        
+
         .feature-card {
-            background: var(--darker);
-            border-radius: var(--border-radius);
+            background: var(--card-bg);
+            border-radius: var(--radius);
             padding: 2.5rem;
             transition: var(--transition);
-            border: 1px solid var(--glass-border);
+            border: 1px solid var(--border);
             position: relative;
             overflow: hidden;
         }
-        
+
         .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
             border-color: var(--primary);
         }
-        
+
         .feature-icon {
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
             color: var(--primary);
         }
-        
+
         /* Stats */
         .stats {
             display: grid;
@@ -218,45 +228,48 @@
             gap: 2rem;
             margin-top: 4rem;
         }
-        
+
         .stat-card {
-            background: var(--darker);
-            border-radius: var(--border-radius);
+            background: var(--card-bg);
+            border-radius: var(--radius);
             padding: 2rem;
             text-align: center;
-            border: 1px solid var(--glass-border);
+            border: 1px solid var(--border);
         }
-        
+
         .stat-number {
             font-size: 3rem;
-            font-weight: 800;
+            font-weight: 900;
             margin-bottom: 0.5rem;
             color: var(--primary);
         }
-        
+
         .stat-label {
-            color: var(--gray);
+            color: var(--text-secondary);
             font-size: 1rem;
         }
-        
+
         /* Commands */
         .command-list {
             display: grid;
             gap: 1.5rem;
         }
-        
+
         .command {
-            background: var(--darker);
-            border-radius: var(--border-radius);
+            background: var(--card-bg);
+            border-radius: var(--radius);
             padding: 1.5rem;
             transition: var(--transition);
-            border: 1px solid var(--glass-border);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
         }
-        
+
         .command:hover {
             border-color: var(--primary);
+            transform: translateY(-5px);
         }
-        
+
         .command-name {
             font-weight: 700;
             font-size: 1.2rem;
@@ -265,285 +278,203 @@
             align-items: center;
             gap: 0.75rem;
         }
-        
+
         .command-name i {
             color: var(--primary);
         }
-        
+
         .command-usage {
             background: rgba(0, 0, 0, 0.3);
             padding: 0.75rem 1rem;
             border-radius: 8px;
             font-family: 'Courier New', monospace;
-            display: inline-block;
-            margin-top: 1rem;
-            color: var(--light);
+            margin-top: auto;
+            color: var(--text);
             font-size: 0.9rem;
             border-left: 3px solid var(--primary);
         }
-        
-        .command-badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: rgba(255, 0, 0, 0.2);
-            color: #ff5555;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        
+
         /* Categories */
         .categories {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 2rem;
         }
-        
+
         .category {
-            background: var(--darker);
-            border-radius: var(--border-radius);
+            background: var(--card-bg);
+            border-radius: var(--radius);
             padding: 2rem 1.5rem;
             text-align: center;
             transition: var(--transition);
-            border: 1px solid var(--glass-border);
+            border: 1px solid var(--border);
         }
-        
+
         .category:hover {
             transform: translateY(-5px);
             border-color: var(--primary);
         }
-        
+
         .category-icon {
             font-size: 2.5rem;
             margin-bottom: 1rem;
             color: var(--primary);
         }
-        
-        /* How it works */
+
+        /* Steps */
         .steps {
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 3rem;
             max-width: 800px;
             margin: 0 auto;
         }
-        
+
         .step {
             display: flex;
             gap: 2rem;
             align-items: flex-start;
         }
-        
+
         .step-number {
             background: var(--primary);
-            color: white;
-            width: 40px;
-            height: 40px;
+            color: var(--white);
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
+            font-weight: 900;
+            font-size: 1.5rem;
             flex-shrink: 0;
         }
-        
+
         /* Footer */
         footer {
-            background: var(--darker);
+            background: var(--black);
             padding: 6rem 0 3rem;
             position: relative;
         }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-        
+
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 3rem;
+            gap: 4rem;
             margin-bottom: 4rem;
         }
-        
+
         .footer-logo {
             font-size: 2rem;
-            font-weight: 800;
+            font-weight: 900;
             margin-bottom: 1.5rem;
-            background: var(--gradient);
+            background: linear-gradient(90deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             display: inline-block;
         }
-        
+
         .footer-links h3 {
-            color: white;
+            color: var(--white);
             margin-bottom: 1.5rem;
             font-size: 1.2rem;
         }
-        
+
         .footer-links ul {
             list-style: none;
         }
-        
+
         .footer-links li {
-            margin-bottom: 0.75rem;
+            margin-bottom: 1rem;
         }
-        
+
         .footer-links a {
-            color: var(--gray);
-            transition: color 0.3s ease;
+            color: var(--text-secondary);
+            transition: var(--transition);
         }
-        
+
         .footer-links a:hover {
             color: var(--primary);
         }
-        
+
         .social-links {
             display: flex;
             gap: 1rem;
-            margin-top: 1.5rem;
+            margin-top: 2rem;
         }
-        
+
         .social-link {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--card-bg);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--gray);
+            color: var(--text-secondary);
             transition: var(--transition);
+            font-size: 1.25rem;
         }
-        
+
         .social-link:hover {
             background: var(--primary);
-            color: white;
+            color: var(--white);
+            transform: translateY(-3px);
         }
-        
+
         .copyright {
             text-align: center;
             padding-top: 3rem;
             margin-top: 3rem;
-            border-top: 1px solid var(--glass-border);
-            color: var(--gray);
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
             font-size: 0.9rem;
         }
-        
-        /* Background elements */
-        .bg-element {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.15;
-            z-index: -1;
-        }
-        
-        .bg-element-1 {
-            width: 400px;
-            height: 400px;
-            background: var(--primary);
-            top: -100px;
-            left: -100px;
-        }
-        
-        .bg-element-2 {
-            width: 600px;
-            height: 600px;
-            background: var(--secondary);
-            bottom: -200px;
-            right: -200px;
-        }
-        
+
         /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        [data-animate] {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition);
         }
-        
-        @keyframes slideUp {
-            from { 
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to { 
-                opacity: 1;
-                transform: translateY(0);
-            }
+
+        [data-animate].animated {
+            opacity: 1;
+            transform: translateY(0);
         }
-        
-        .animate {
-            animation: fadeIn 1s ease forwards;
-        }
-        
-        .animate-slide {
-            animation: slideUp 0.8s ease forwards;
-        }
-        
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.2s; }
-        .delay-3 { animation-delay: 0.3s; }
-        .delay-4 { animation-delay: 0.4s; }
-        .delay-5 { animation-delay: 0.5s; }
-        
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+        .delay-5 { transition-delay: 0.5s; }
+
         /* Responsive */
-        @media (max-width: 992px) {
-            h1 {
-                font-size: 3rem;
-            }
-            
-            h2 {
-                font-size: 2.2rem;
-            }
-        }
-        
         @media (max-width: 768px) {
             section {
-                padding: 4rem 0;
+                padding: 6rem 0;
             }
-            
-            h1 {
-                font-size: 2.5rem;
-            }
-            
-            h2 {
-                font-size: 2rem;
-            }
-            
+
             .buttons {
                 flex-direction: column;
-                align-items: center;
             }
-            
+
             .btn {
                 width: 100%;
-                max-width: 300px;
             }
-            
+
             .step {
                 flex-direction: column;
                 gap: 1rem;
             }
         }
-        
+
         @media (max-width: 480px) {
             .container {
                 padding: 0 1.5rem;
             }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .tagline {
-                font-size: 1.2rem;
-            }
-            
+
             .feature-card {
                 padding: 2rem;
             }
@@ -553,249 +484,247 @@
 <body>
     <!-- Header -->
     <header>
-        <div class="bg-element bg-element-1"></div>
-        <div class="bg-element bg-element-2"></div>
+        <div class="particles" id="particles"></div>
         
         <div class="container">
-            <div class="header-content animate-slide">
-                <h1 class="logo">VEGAS+ MARKET</h1>
-                <p class="tagline">Современный маркетплейс для Discord с безопасными сделками и аукционной системой</p>
+            <div class="header-content" data-animate>
+                <h1>VEGAS+ MARKET</h1>
+                <p class="tagline">Самый мощный маркетплейс для Discord с аукционами и безопасными сделками</p>
                 
                 <div class="buttons">
                     <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="btn btn-primary">
                         <i class="fab fa-discord"></i> Добавить бота
                     </a>
                     <a href="https://discord.gg/YCg9JXPmCN" class="btn btn-secondary">
-                        <i class="fas fa-headset"></i> Сервер поддержки
+                        <i class="fas fa-arrow-right"></i> Подробнее
                     </a>
                 </div>
             </div>
         </div>
     </header>
-    
+
     <!-- Features -->
     <section id="features">
         <div class="container">
-            <h2 class="animate">Основные возможности</h2>
+            <h2 data-animate>Что делает нас лучшими?</h2>
             
             <div class="features">
-                <div class="feature-card animate delay-1">
+                <div class="feature-card" data-animate>
                     <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
+                        <i class="fas fa-bolt"></i>
                     </div>
-                    <h3>Безопасные сделки</h3>
-                    <p>Встроенная система защиты от мошенников и проверка продавцов для вашего спокойствия.</p>
+                    <h3>Молниеносные сделки</h3>
+                    <p>Покупайте и продавайте в пару кликов без лишних движений и ожиданий.</p>
                 </div>
                 
-                <div class="feature-card animate delay-2">
+                <div class="feature-card" data-animate class="delay-1">
                     <div class="feature-icon">
                         <i class="fas fa-gavel"></i>
                     </div>
                     <h3>Аукционы</h3>
-                    <p>Создавайте аукционы с автоматическим отслеживанием ставок и уведомлениями.</p>
+                    <p>Создавайте аукционы с автоматическим определением победителя.</p>
                 </div>
                 
-                <div class="feature-card animate delay-3">
+                <div class="feature-card" data-animate class="delay-2">
                     <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
+                        <i class="fas fa-shield-alt"></i>
                     </div>
-                    <h3>Мгновенные сделки</h3>
-                    <p>Быстрое оформление покупок с защитой для обеих сторон.</p>
+                    <h3>100% безопасность</h3>
+                    <p>Встроенная защита от мошенников и система гарантий.</p>
                 </div>
                 
-                <div class="feature-card animate delay-4">
+                <div class="feature-card" data-animate class="delay-3">
                     <div class="feature-icon">
                         <i class="fas fa-chart-line"></i>
                     </div>
-                    <h3>Аналитика</h3>
-                    <p>Подробная статистика по продажам, просмотрам и активности пользователей.</p>
+                    <h3>Подробная аналитика</h3>
+                    <p>Отслеживайте статистику продаж и покупательскую активность.</p>
                 </div>
                 
-                <div class="feature-card animate delay-5">
+                <div class="feature-card" data-animate class="delay-4">
                     <div class="feature-icon">
                         <i class="fas fa-bell"></i>
                     </div>
-                    <h3>Уведомления</h3>
-                    <p>Оповещения о новых ставках, сообщениях и изменениях статуса.</p>
+                    <h3>Умные уведомления</h3>
+                    <p>Получайте оповещения о новых ставках и сообщениях.</p>
                 </div>
                 
-                <div class="feature-card animate">
+                <div class="feature-card" data-animate class="delay-5">
                     <div class="feature-icon">
-                        <i class="fas fa-cogs"></i>
+                        <i class="fas fa-sliders-h"></i>
                     </div>
                     <h3>Гибкие настройки</h3>
-                    <p>Полный контроль для администраторов сервера.</p>
+                    <p>Полный контроль для админов сервера.</p>
                 </div>
             </div>
             
             <div class="stats">
-                <div class="stat-card animate delay-1">
+                <div class="stat-card" data-animate>
                     <div class="stat-number">1000+</div>
                     <div class="stat-label">Активных пользователей</div>
                 </div>
-                <div class="stat-card animate delay-2">
+                <div class="stat-card" data-animate class="delay-1">
                     <div class="stat-number">5000+</div>
                     <div class="stat-label">Завершенных сделок</div>
                 </div>
-                <div class="stat-card animate delay-3">
+                <div class="stat-card" data-animate class="delay-2">
                     <div class="stat-number">99%</div>
                     <div class="stat-label">Успешных сделок</div>
                 </div>
-                <div class="stat-card animate delay-4">
+                <div class="stat-card" data-animate class="delay-3">
                     <div class="stat-number">24/7</div>
                     <div class="stat-label">Поддержка</div>
                 </div>
             </div>
         </div>
     </section>
-    
+
     <!-- Commands -->
-    <section id="commands" style="background: var(--darker);">
+    <section id="commands" style="background: var(--card-bg);">
         <div class="container">
-            <h2 class="animate">Команды бота</h2>
+            <h2 data-animate>Основные команды</h2>
             
             <div class="command-list">
-                <div class="command animate delay-1">
+                <div class="command" data-animate>
                     <div class="command-name">
                         <i class="fas fa-tag"></i> /sell
                     </div>
-                    <p>Создать новое объявление о продаже товара или услуги</p>
-                    <div class="command-usage">/sell категория цена - название - описание</div>
+                    <p>Создать новое объявление о продаже</p>
+                    <div class="command-usage">/sell [категория] [цена] - [название]</div>
                 </div>
                 
-                <div class="command animate delay-2">
+                <div class="command" data-animate class="delay-1">
                     <div class="command-name">
                         <i class="fas fa-gavel"></i> /bid
                     </div>
                     <p>Сделать ставку на аукцион</p>
-                    <div class="command-usage">/bid [ID объявления] [сумма]</div>
+                    <div class="command-usage">/bid [ID] [сумма]</div>
                 </div>
                 
-                <div class="command animate delay-3">
+                <div class="command" data-animate class="delay-2">
                     <div class="command-name">
                         <i class="fas fa-check-circle"></i> /verify
                     </div>
-                    <p>Запросить верификацию продавца</p>
+                    <p>Верификация продавца</p>
                     <div class="command-usage">/verify</div>
-                    <div class="command-badge">Поддержка</div>
                 </div>
                 
-                <div class="command animate delay-4">
+                <div class="command" data-animate class="delay-3">
                     <div class="command-name">
                         <i class="fas fa-search"></i> /search
                     </div>
-                    <p>Поиск товаров по категории или ключевым словам</p>
-                    <div class="command-usage">/search электроника iPhone</div>
+                    <p>Поиск товаров</p>
+                    <div class="command-usage">/search [запрос]</div>
                 </div>
                 
-                <div class="command animate delay-5">
+                <div class="command" data-animate class="delay-4">
                     <div class="command-name">
                         <i class="fas fa-chart-pie"></i> /stats
                     </div>
-                    <p>Просмотреть статистику пользователя</p>
+                    <p>Статистика пользователя</p>
                     <div class="command-usage">/stats @User</div>
                 </div>
                 
-                <div class="command animate">
+                <div class="command" data-animate class="delay-5">
                     <div class="command-name">
                         <i class="fas fa-trash-alt"></i> /delete
                     </div>
-                    <p>Удалить своё объявление</p>
-                    <div class="command-usage">/delete [ID объявления]</div>
+                    <p>Удалить объявление</p>
+                    <div class="command-usage">/delete [ID]</div>
                 </div>
             </div>
         </div>
     </section>
-    
+
     <!-- Categories -->
     <section id="categories">
         <div class="container">
-            <h2 class="animate">Категории товаров</h2>
+            <h2 data-animate>Категории товаров</h2>
             
             <div class="categories">
-                <div class="category animate delay-1">
+                <div class="category" data-animate>
                     <div class="category-icon"><i class="fas fa-mobile-alt"></i></div>
                     <h3>Электроника</h3>
-                    <p>Смартфоны, ноутбуки, гаджеты</p>
+                    <p>Телефоны, ноутбуки, гаджеты</p>
                 </div>
                 
-                <div class="category animate delay-2">
+                <div class="category" data-animate class="delay-1">
                     <div class="category-icon"><i class="fas fa-tshirt"></i></div>
                     <h3>Одежда</h3>
                     <p>Одежда, обувь, аксессуары</p>
                 </div>
                 
-                <div class="category animate delay-3">
+                <div class="category" data-animate class="delay-2">
                     <div class="category-icon"><i class="fas fa-gamepad"></i></div>
                     <h3>Игры</h3>
                     <p>Аккаунты, ключи, предметы</p>
                 </div>
                 
-                <div class="category animate delay-4">
+                <div class="category" data-animate class="delay-3">
                     <div class="category-icon"><i class="fas fa-tools"></i></div>
                     <h3>Услуги</h3>
                     <p>Фриланс, ремонт, обучение</p>
                 </div>
                 
-                <div class="category animate delay-5">
+                <div class="category" data-animate class="delay-4">
                     <div class="category-icon"><i class="fas fa-home"></i></div>
                     <h3>Недвижимость</h3>
                     <p>Аренда, покупка, продажа</p>
                 </div>
                 
-                <div class="category animate">
+                <div class="category" data-animate class="delay-5">
                     <div class="category-icon"><i class="fas fa-box-open"></i></div>
                     <h3>Другое</h3>
-                    <p>Все остальные товары</p>
+                    <p>Разные товары</p>
                 </div>
             </div>
         </div>
     </section>
-    
+
     <!-- How it works -->
-    <section id="how-it-works" style="background: var(--darker);">
+    <section id="how-it-works" style="background: var(--card-bg);">
         <div class="container">
-            <h2 class="animate">Как это работает?</h2>
+            <h2 data-animate>Как начать?</h2>
             
             <div class="steps">
-                <div class="step animate delay-1">
+                <div class="step" data-animate>
                     <div class="step-number">1</div>
                     <div>
-                        <h3>Добавьте бота на сервер</h3>
-                        <p>Пригласите Vegas+ Market на свой Discord сервер с помощью кнопки "Добавить бота".</p>
-                        <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="btn btn-outline" style="margin-top: 1rem;">
-                            <i class="fab fa-discord"></i> Добавить бота
+                        <h3>Добавьте бота</h3>
+                        <p>Пригласите Vegas+ Market на свой сервер Discord одной кнопкой.</p>
+                        <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="btn btn-accent" style="margin-top: 1rem;">
+                            <i class="fab fa-discord"></i> Добавить сейчас
                         </a>
                     </div>
                 </div>
                 
-                <div class="step animate delay-2">
+                <div class="step" data-animate class="delay-1">
                     <div class="step-number">2</div>
                     <div>
                         <h3>Настройте каналы</h3>
-                        <p>Создайте отдельные каналы для объявлений, аукционов и обсуждений.</p>
+                        <p>Создайте отдельные каналы для объявлений и аукционов.</p>
                     </div>
                 </div>
                 
-                <div class="step animate delay-3">
+                <div class="step" data-animate class="delay-2">
                     <div class="step-number">3</div>
                     <div>
                         <h3>Начните продавать</h3>
-                        <p>Используйте команду /sell для создания первого объявления.</p>
-                        <div class="command-usage" style="margin-top: 1rem;">/sell категория цена - название - описание</div>
+                        <p>Используйте команду /sell для первого объявления.</p>
+                        <div class="command-usage" style="margin-top: 1rem;">/sell [категория] [цена] - [название]</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    
+
     <!-- Footer -->
     <footer>
-        <div class="footer-content">
+        <div class="container">
             <div class="footer-grid">
                 <div class="footer-links">
                     <div class="footer-logo">VEGAS+</div>
-                    <p>Современный маркетплейс для Discord с безопасными сделками и аукционной системой.</p>
+                    <p>Самый мощный маркетплейс для Discord с аукционами и безопасными сделками.</p>
                     <div class="social-links">
                         <a href="https://discord.gg/YCg9JXPmCN" class="social-link"><i class="fab fa-discord"></i></a>
                         <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
@@ -809,54 +738,82 @@
                         <li><a href="#features">Возможности</a></li>
                         <li><a href="#commands">Команды</a></li>
                         <li><a href="#categories">Категории</a></li>
-                        <li><a href="#how-it-works">Как это работает</a></li>
+                        <li><a href="#how-it-works">Как начать</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-links">
-                    <h3>Ресурсы</h3>
+                    <h3>Поддержка</h3>
                     <ul>
-                        <li><a href="https://discord.gg/YCg9JXPmCN">Поддержка</a></li>
+                        <li><a href="https://discord.gg/YCg9JXPmCN">Discord сервер</a></li>
                         <li><a href="#">Документация</a></li>
-                        <li><a href="#">Блог</a></li>
                         <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Контакты</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-links">
                     <h3>Добавить бота</h3>
-                    <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="btn btn-primary" style="margin-top: 0.5rem;">
+                    <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="btn btn-primary">
                         <i class="fab fa-discord"></i> Пригласить
                     </a>
                 </div>
             </div>
             
             <div class="copyright">
-                © 2023 Vegas+ Market Bot. Все права защищены.
+                © 2023 Vegas+ Market. Все права защищены.
             </div>
         </div>
     </footer>
-    
+
     <script>
-        // Simple animation on scroll
-        document.addEventListener('DOMContentLoaded', function() {
-            const animateElements = document.querySelectorAll('.animate, .animate-slide');
+        // Particles effect
+        function initParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = window.innerWidth < 768 ? 30 : 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random properties
+                const size = Math.random() * 5 + 2;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 10 + 10;
+                const color = Math.random() > 0.7 ? 'var(--secondary)' : 'var(--primary)';
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.background = color;
+                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        // Scroll animations
+        function initAnimations() {
+            const animateElements = document.querySelectorAll('[data-animate]');
             
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.style.opacity = 1;
-                        entry.target.style.animationPlayState = 'running';
+                        entry.target.classList.add('animated');
                     }
                 });
             }, { threshold: 0.1 });
             
             animateElements.forEach(el => {
-                el.style.opacity = 0;
                 observer.observe(el);
             });
-            
-            // Smooth scroll for anchor links
+        }
+
+        // Smooth scroll
+        function initSmoothScroll() {
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -869,6 +826,13 @@
                     }
                 });
             });
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            initParticles();
+            initAnimations();
+            initSmoothScroll();
         });
     </script>
 </body>
