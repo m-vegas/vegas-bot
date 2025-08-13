@@ -38,10 +38,88 @@
                 radial-gradient(circle at 80% 70%, rgba(0, 255, 136, 0.15) 0%, transparent 30%);
         }
         
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--darker);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .preloader-logo {
+            font-family: 'Kanit', sans-serif;
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+            letter-spacing: -1px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s forwards 0.3s;
+        }
+        
+        .loader {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards 0.5s;
+        }
+        
+        .loader-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 5px solid transparent;
+            border-top-color: var(--primary);
+            animation: spin 1.5s linear infinite;
+        }
+        
+        .loader-inner:nth-child(2) {
+            border-top-color: var(--secondary);
+            animation-delay: 0.2s;
+        }
+        
+        .loader-inner:nth-child(3) {
+            border-top-color: var(--primary);
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
         /* Анимация фона */
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0.4; }
         }
         
         .bg-blob {
@@ -52,7 +130,7 @@
             filter: blur(80px);
             opacity: 0.3;
             z-index: -1;
-            animation: float 8s ease-in-out infinite;
+            animation: float 8s ease-in-out infinite, pulse 12s ease-in-out infinite;
         }
         
         .blob-1 {
@@ -69,6 +147,16 @@
             animation-delay: 2s;
         }
         
+        .blob-3 {
+            background: #ff00ff;
+            top: 50%;
+            left: 50%;
+            width: 400px;
+            height: 400px;
+            animation-delay: 4s;
+            opacity: 0.2;
+        }
+        
         /* Основные стили */
         header {
             padding: 4rem 2rem;
@@ -76,6 +164,9 @@
             position: relative;
             overflow: hidden;
             margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         
         .header-content {
@@ -96,6 +187,7 @@
             color: transparent;
             line-height: 1;
             letter-spacing: -1px;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
         }
         
         .tagline {
@@ -147,6 +239,32 @@
             background: var(--gradient);
             color: white;
             box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0) 45%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0) 55%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(30deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) rotate(30deg); }
         }
         
         .btn-primary:hover {
@@ -163,6 +281,18 @@
         
         .btn-secondary:hover {
             background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-3px);
+        }
+        
+        .btn-tertiary {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn-tertiary:hover {
+            background: rgba(255, 255, 255, 0.1);
             transform: translateY(-3px);
         }
         
@@ -194,6 +324,19 @@
             color: transparent;
             line-height: 1.2;
             letter-spacing: -1px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient);
+            border-radius: 3px;
         }
         
         h3 {
@@ -271,10 +414,12 @@
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
+            position: relative;
         }
         
         .command:hover {
             border-color: var(--primary);
+            transform: translateY(-5px);
         }
         
         .command-name {
@@ -300,6 +445,18 @@
             margin-top: 1rem;
             color: var(--light);
             border-left: 3px solid var(--primary);
+        }
+        
+        .command-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff5555;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
         
         /* Категории */
@@ -328,6 +485,49 @@
         .category-icon {
             font-size: 2.5rem;
             margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* Блок статистики */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .stat-card {
+            background: var(--glass);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+        
+        .stat-number {
+            font-family: 'Kanit', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .stat-label {
+            color: var(--gray);
+            font-size: 1rem;
         }
         
         /* Футер */
@@ -380,10 +580,26 @@
             text-decoration: none;
             transition: color 0.3s ease;
             font-weight: 600;
+            position: relative;
+        }
+        
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
         }
         
         .footer-link:hover {
             color: var(--primary);
+        }
+        
+        .footer-link:hover::after {
+            width: 100%;
         }
         
         .social-links {
@@ -411,6 +627,7 @@
             background: var(--primary);
             color: var(--dark);
             transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.2);
         }
         
         .copyright {
@@ -473,9 +690,20 @@
     </style>
 </head>
 <body>
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-logo">VEGAS+</div>
+        <div class="loader">
+            <div class="loader-inner"></div>
+            <div class="loader-inner"></div>
+            <div class="loader-inner"></div>
+        </div>
+    </div>
+    
     <!-- Анимированный фон -->
     <div class="bg-blob blob-1"></div>
     <div class="bg-blob blob-2"></div>
+    <div class="bg-blob blob-3"></div>
     
     <!-- Шапка -->
     <header>
@@ -489,6 +717,12 @@
                 </a>
                 <a href="https://discord.gg/YCg9JXPmCN" class="btn btn-secondary">
                     <i class="fas fa-headset"></i> Сервер поддержки
+                </a>
+                <a href="#features" class="btn btn-tertiary">
+                    <i class="fas fa-star"></i> Возможности
+                </a>
+                <a href="#commands" class="btn btn-tertiary">
+                    <i class="fas fa-terminal"></i> Команды
                 </a>
             </div>
         </div>
@@ -548,6 +782,25 @@
                     <p>Полный контроль над категориями, правами доступа и модерацией для администраторов.</p>
                 </div>
             </div>
+            
+            <div class="stats">
+                <div class="stat-card delay-1">
+                    <div class="stat-number">1000+</div>
+                    <div class="stat-label">Активных пользователей</div>
+                </div>
+                <div class="stat-card delay-2">
+                    <div class="stat-number">5000+</div>
+                    <div class="stat-label">Завершенных сделок</div>
+                </div>
+                <div class="stat-card delay-3">
+                    <div class="stat-number">99%</div>
+                    <div class="stat-label">Положительных отзывов</div>
+                </div>
+                <div class="stat-card delay-4">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Поддержка</div>
+                </div>
+            </div>
         </section>
         
         <!-- Команды -->
@@ -582,15 +835,16 @@
                     <div class="command-name">
                         <i class="fas fa-check-circle"></i> /verify
                     </div>
-                    <p>Верифицировать продавца (для админов)</p>
-                    <div class="command-usage">/verify @User</div>
+                    <p>Запросить верификацию продавца (через поддержку)</p>
+                    <div class="command-usage">/verify</div>
+                    <div class="command-badge">Поддержка</div>
                 </div>
                 
                 <div class="command">
                     <div class="command-name">
                         <i class="fas fa-trash-alt"></i> /delete
                     </div>
-                    <p>Удалить объявление (для админов)</p>
+                    <p>Удалить своё объявление</p>
                     <div class="command-usage">/delete 42</div>
                 </div>
                 
@@ -601,6 +855,23 @@
                     <p>Просмотреть статистику пользователя</p>
                     <div class="command-usage">/stats @User</div>
                 </div>
+                
+                <div class="command">
+                    <div class="command-name">
+                        <i class="fas fa-flag"></i> /report
+                    </div>
+                    <p>Пожаловаться на объявление (удаление через поддержку)</p>
+                    <div class="command-usage">/report 42 Причина</div>
+                    <div class="command-badge">Поддержка</div>
+                </div>
+                
+                <div class="command">
+                    <div class="command-name">
+                        <i class="fas fa-search"></i> /search
+                    </div>
+                    <p>Поиск товаров по категории или ключевым словам</p>
+                    <div class="command-usage">/search electronics iPhone</div>
+                </div>
             </div>
         </section>
         
@@ -609,39 +880,73 @@
             <h2>Категории товаров</h2>
             <div class="categories">
                 <div class="category delay-1">
-                    <div class="category-icon">📱</div>
+                    <div class="category-icon"><i class="fas fa-mobile-alt"></i></div>
                     <h3>Электроника</h3>
                     <p>Смартфоны, ноутбуки, гаджеты</p>
                 </div>
                 
                 <div class="category delay-2">
-                    <div class="category-icon">👕</div>
+                    <div class="category-icon"><i class="fas fa-tshirt"></i></div>
                     <h3>Одежда</h3>
                     <p>Одежда, обувь, аксессуары</p>
                 </div>
                 
                 <div class="category delay-3">
-                    <div class="category-icon">🛠️</div>
+                    <div class="category-icon"><i class="fas fa-tools"></i></div>
                     <h3>Услуги</h3>
                     <p>Фриланс, ремонт, обучение</p>
                 </div>
                 
                 <div class="category">
-                    <div class="category-icon">🏠</div>
+                    <div class="category-icon"><i class="fas fa-home"></i></div>
                     <h3>Недвижимость</h3>
                     <p>Аренда, покупка, продажа</p>
                 </div>
                 
                 <div class="category">
-                    <div class="category-icon">🚗</div>
+                    <div class="category-icon"><i class="fas fa-car"></i></div>
                     <h3>Транспорт</h3>
                     <p>Автомобили, мотоциклы</p>
                 </div>
                 
                 <div class="category">
-                    <div class="category-icon">📦</div>
+                    <div class="category-icon"><i class="fas fa-box-open"></i></div>
                     <h3>Другое</h3>
                     <p>Все остальные товары</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Как начать -->
+        <section id="start">
+            <h2>Как начать?</h2>
+            <div class="features">
+                <div class="feature-card delay-1">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Добавьте бота</h3>
+                    <p>Пригласите Vegas+ Market на свой сервер Discord с помощью кнопки выше.</p>
+                    <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="btn btn-tertiary" style="margin-top: 1rem;">
+                        <i class="fab fa-discord"></i> Добавить бота
+                    </a>
+                </div>
+                
+                <div class="feature-card delay-2">
+                    <div class="feature-icon">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                    <h3>Настройте каналы</h3>
+                    <p>Создайте отдельные каналы для объявлений, аукционов и обсуждений.</p>
+                </div>
+                
+                <div class="feature-card delay-3">
+                    <div class="feature-icon">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <h3>Начните продавать</h3>
+                    <p>Используйте команду /sell для создания первого объявления.</p>
+                    <div class="command-usage" style="margin-top: 1rem;">/sell category цена Описание [фото]</div>
                 </div>
             </div>
         </section>
@@ -656,12 +961,13 @@
                 <a href="#features" class="footer-link">Возможности</a>
                 <a href="#commands" class="footer-link">Команды</a>
                 <a href="#categories" class="footer-link">Категории</a>
+                <a href="#start" class="footer-link">Как начать</a>
                 <a href="https://discord.gg/YCg9JXPmCN" class="footer-link">Поддержка</a>
                 <a href="https://discord.com/oauth2/authorize?client_id=1381201922127564901&permissions=8&scope=bot" class="footer-link">Добавить бота</a>
             </div>
             
             <div class="social-links">
-                <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                <a href="https://discord.gg/YCg9JXPmCN" class="social-link"><i class="fab fa-discord"></i></a>
                 <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
                 <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
                 <a href="#" class="social-link"><i class="fab fa-github"></i></a>
@@ -672,6 +978,22 @@
     </footer>
     
     <script>
+        // Preloader
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const preloader = document.getElementById('preloader');
+                preloader.style.opacity = '0';
+                preloader.style.pointerEvents = 'none';
+                
+                setTimeout(function() {
+                    preloader.style.display = 'none';
+                }, 500);
+                
+                // Анимация появления шапки
+                document.querySelector('header').classList.add('visible');
+            }, 1500);
+        });
+        
         // Анимация появления при скролле
         const animateOnScroll = () => {
             const sections = document.querySelectorAll('section');
@@ -709,12 +1031,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             animateOnScroll();
             smoothScroll();
-            
-            // Добавляем небольшую задержку для анимации шапки
-            setTimeout(() => {
-                document.querySelector('header').style.opacity = '1';
-                document.querySelector('header').style.transform = 'translateY(0)';
-            }, 100);
         });
     </script>
 </body>
